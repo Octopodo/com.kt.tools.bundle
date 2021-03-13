@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ExtensionManifest Version="9.0" ExtensionBundleId="com.kt.tools.bundle" ExtensionBundleVersion="1.0.0"
+        ExtensionBundleName="KT_Bundle" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" DevBundleVersion="1.0.0">
+    <ExtensionList>
+        <Extension Id="com.kt.animate-api" Version="1.0.0" />
+        <Extension Id="com.kt.photoshop-api" Version="1.0.0" />
+        <Extension Id="com.kt.after-effects-api" Version="1.0.0" />
+    </ExtensionList>
+    <ExecutionEnvironment>
+        <HostList>
+            <Host Name="PHXS" Version="[20.0,99.9]" />
+            <Host Name="PHSP" Version="[20.0,99.9]" />
+            <Host Name="AEFT" Version="[14.0,99.9]"/>
+            <Host Name="FLPR" Version="[19.0,99.9]"/>
+
+        </HostList>
+        <LocaleList>
+            <Locale Code="All" />
+        </LocaleList>
+        <RequiredRuntimeList>
+            <RequiredRuntime Name="CSXS" Version="9.0" />
+        </RequiredRuntimeList>
+    </ExecutionEnvironment>
+    <DispatchInfoList>
+        <Extension Id="com.kt.photoshop-api">
+            <DispatchInfo Host="PHXS">
+                <Resources>
+                    <MainPath>./public/index-dev.html</MainPath>
+                    <ScriptPath>./js/photoshp/index.jsxinc</ScriptPath>
+    
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>KT Bundle</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>620</Height>
+                            <Width>860</Width>
+                        </Size>
+                        <MinSize>
+                            <Height>50</Height>
+                            <Width>50</Width>
+                        </MinSize>
+                        <MaxSize>
+                            <Height>1600</Height>
+                            <Width>1600</Width>
+                        </MaxSize>
+                    </Geometry>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+        <Extension Id="com.kt.animate-api">
+            <DispatchInfo Host="FLPR">
+                <Resources>
+                    <MainPath>./public/index-dev.html</MainPath>
+                    <ScriptPath>./js/animate/include.jsfl</ScriptPath>
+                    <!-- <CEFCommandLine>
+                    </CEFCommandLine> -->
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>KT Bundle</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>620</Height>
+                            <Width>860</Width>
+                        </Size>
+                        <MinSize>
+                            <Height>50</Height>
+                            <Width>50</Width>
+                        </MinSize>
+                        <MaxSize>
+                            <Height>1600</Height>
+                            <Width>1600</Width>
+                        </MaxSize>
+                    </Geometry>
+                    <Icons />
+                </UI>
+            </DispatchInfo>
+        </Extension>
+        <Extension Id="com.kt.after-effects-api">
+            <DispatchInfo Host="AEFT">
+                <Resources>
+                  <MainPath>./public/index-dev.html</MainPath>
+                  <ScriptPath>./js/after-effects/index.jsxinc</ScriptPath>
+                </Resources>
+                <Lifecycle>
+                    <AutoVisible>true</AutoVisible>
+                </Lifecycle>
+                <UI>
+                    <Type>Panel</Type>
+                    <Menu>KT Bundle</Menu>
+                    <Geometry>
+                        <Size>
+                            <Height>620</Height>
+                            <Width>860</Width>
+                        </Size>
+                        <MinSize>
+                            <Height>100</Height>
+                            <Width>100</Width>
+                        </MinSize>
+                        <MaxSize>
+                            <Height>1600</Height>
+                            <Width>1600</Width>
+                        </MaxSize>
+                    </Geometry>
+                </UI>
+            </DispatchInfo>
+        </Extension>
+
+
+    </DispatchInfoList>
+</ExtensionManifest>
