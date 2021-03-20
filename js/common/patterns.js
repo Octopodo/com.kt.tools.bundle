@@ -146,18 +146,14 @@
       if(arguments.length === 0) {
         return selfCheckers
       } else {
-        selfCheckers = arguments[0]
+        selfCheckers = arguments[0];
+        selfLength = selfCheckers.length
       }
       
     }
   
     this.length = function() {
-      if(arguments.length === 0) {
         return selfLength
-      } else if(_.isNumber(arguments[0] && arguments[0] === parseInt(arguments[0], 10))) {
-        selfLength = arguments[0]
-      }
-      
     }
   }
   
@@ -175,7 +171,6 @@
         }
       }
       this.checkers(checkers);
-      this.length(length);
       return this
     },
     check: function(source) {

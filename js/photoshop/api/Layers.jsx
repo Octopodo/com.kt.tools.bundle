@@ -25,6 +25,7 @@ function getLayers(params) {
   return selectedLayers
 }
 
+
 function traverseLayers(parent, callback) {
   var parent = parent || KT.Document(),
       sets = parent.layerSets,
@@ -47,8 +48,7 @@ function addParent(parent) {
 
 function rotateLayer(layer, angle, pivot){
   if(angle == 0) { return }
-
-  rotateLayerAction(layer, angle, pivot)
+  rotateLayerAction(layer, angle, pivot);
 }
 
 function setPosition(position, origin) {
@@ -99,38 +99,6 @@ function setParent(parent) {
     
   })
 }
-
-
-
-function moveLayerInside(parent, layer) {
-
-  var parentIndex = parent.itemIndex - 1,
-      layerID = layer.id;
-  var idmove = charIDToTypeID( "move" );
-    var desc4 = new ActionDescriptor();
-    var idnull = charIDToTypeID( "null" );
-        var ref4 = new ActionReference();
-        var idLyr = charIDToTypeID( "Lyr " );
-        var idOrdn = charIDToTypeID( "Ordn" );
-        var idTrgt = charIDToTypeID( "Trgt" );
-        ref4.putEnumerated( idLyr, idOrdn, idTrgt );
-    desc4.putReference( idnull, ref4 );
-    var idT = charIDToTypeID( "T   " );
-        var ref5 = new ActionReference();
-        var idLyr = charIDToTypeID( "Lyr " );
-        ref5.putIndex( idLyr, parentIndex ); //// Parent Layer
-    desc4.putReference( idT, ref5 );
-    var idAdjs = charIDToTypeID( "Adjs" );
-    desc4.putBoolean( idAdjs, false );
-    var idVrsn = charIDToTypeID( "Vrsn" );
-    desc4.putInteger( idVrsn, 5 );
-    var idLyrI = charIDToTypeID( "LyrI" );
-        var list2 = new ActionList();
-        list2.putInteger( layerID );
-    desc4.putList( idLyrI, list2 );
-  executeAction( idmove, desc4, DialogModes.NO );
-}
-
 
 
 function getLayerDocument(layer) {
@@ -281,6 +249,37 @@ function resizeLayerAction(layer, size) {
     desc361.putUnitDouble( idHght, idPrc, height );
   executeAction( idTrnf, desc361, DialogModes.NO );
 }
+
+function moveLayerInside(parent, layer) {
+  var parentIndex = parent.itemIndex - 1,
+      layerID = layer.id;
+  var idmove = charIDToTypeID( "move" );
+    var desc4 = new ActionDescriptor();
+    var idnull = charIDToTypeID( "null" );
+        var ref4 = new ActionReference();
+        var idLyr = charIDToTypeID( "Lyr " );
+        var idOrdn = charIDToTypeID( "Ordn" );
+        var idTrgt = charIDToTypeID( "Trgt" );
+        ref4.putEnumerated( idLyr, idOrdn, idTrgt );
+    desc4.putReference( idnull, ref4 );
+    var idT = charIDToTypeID( "T   " );
+        var ref5 = new ActionReference();
+        var idLyr = charIDToTypeID( "Lyr " );
+        ref5.putIndex( idLyr, parentIndex ); //// Parent Layer
+    desc4.putReference( idT, ref5 );
+    var idAdjs = charIDToTypeID( "Adjs" );
+    desc4.putBoolean( idAdjs, false );
+    var idVrsn = charIDToTypeID( "Vrsn" );
+    desc4.putInteger( idVrsn, 5 );
+    var idLyrI = charIDToTypeID( "LyrI" );
+        var list2 = new ActionList();
+        list2.putInteger( layerID );
+    desc4.putList( idLyrI, list2 );
+  executeAction( idmove, desc4, DialogModes.NO );
+}
+
+
+
 var LayerCheckers = {
   folders: _.isFolder,
   layers: _.isLayer
