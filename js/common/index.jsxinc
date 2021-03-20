@@ -1,0 +1,8 @@
+var KT = {}
+#include "json2.js"
+#include "underscore.js"
+#include "math.js"
+#include "patterns.js"
+#include "algorithm.js"
+#include "regexp.js"
+#include "component.js"

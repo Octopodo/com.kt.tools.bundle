@@ -1,5 +1,3 @@
-KT.Components.PS = {};
-
 #include "FolderComponent.jsxinc"
 #include "LayerComponent.jsxinc"
 #include "MaskComponent.jsxinc"

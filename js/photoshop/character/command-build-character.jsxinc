@@ -45,26 +45,25 @@ function importFlashScene() {
 
 function BuildCharacter(sceneName) {
   var character = importFlashScene(sceneName),
-      document;
+      document,
+      data;
   if(!character) return;
   preferences.rulerUnits = Units.PIXELS;
-  document = KT.Document(character.id) || KT.Document({
-    width: character.data.size[0].width,
-    height: character.data.size[0].height,
+  data = character.get('data')
+  document = KT.Document(character.get('id')) || KT.Document({
+    width: data.size[0].width,
+    height: data.size[0].height,
     resolution: 72,
-    name: character.id,
+    name: character.get('id'),
   })
 
   character.algorithm('PS: Import Assets', true);
   character.algorithm('PS: Place Assets');
   character.traverse(function(child){
-    if(_.isBoolean(child.isVisible)) {
-      child.source.visible = child.isVisible
+    if(_.isBoolean(child.get('isVisible'))) {
+      child.get('source').visible = child.get('isVisible')
     }
-  })
-  // if(!character)  return;
-  // character.algorithm('Flash: Build Assets');
-  // character.algorithm('Flash: Place Assets', true);
+  }, false, character)
 }
 
 

@@ -2,13 +2,14 @@
 
 
 function placeImage(source, index) {
-  if(this.isDataLayer === true || !this.data.position[index] || !this.source ) return;
-  var self = this;
-  var position = this.data.position[index],
-      anchor = this.data.anchor[index],
-      angle = this.data.rotation[index],
-      size =  this.data.size[index],
-      scale = this.data.scale[index],
+  if(this.get('isDataLayer') === true || !this.get('data').position[index] || !this.get('source') ) return;
+  var self = this,
+      data = this.get('data'),
+      position = data.position[index],
+      anchor = data.anchor[index],
+      angle = data.rotation[index],
+      size =  data.size[index],
+      scale = data.scale[index],
       scale = {width: scale.x * 100, height: scale.y * 100},
       bounds,
       origin;
@@ -19,26 +20,27 @@ function placeImage(source, index) {
     x: bounds.width/2 - anchor.x,
     y: bounds.height/2 - anchor.y,
   };
-  
   KT.Layers.setPosition(position , origin, source);
-  // source.translate(-origin.x, -origin.y)
   KT.Layers.rotate(source, angle, origin);
 }
 
 function placeAssets() {};
 
 placeAssets.default = function(){
-  var self = this;
+  var self = this,
+      frames = this.get('frames'),
+      data = this.get('data'),
+      source = this.get('source')
 
-  if(this.frames && this.data.timing.frames.length > 1) {
+  if(frames && data.timing.frames.length > 1) {
     var i = 0, f,
-        len = this.data.timing.frames.length,
+        len = data.timing.frames.length,
         frameSet,
         fLen,
         frame
         
     for(; i < len; i++) {
-      frameSet = this.frames[i];
+      frameSet = frames[i];
       f = 0;
       fLen = frameSet.length;
       for(; f < fLen; f++) {
@@ -47,7 +49,7 @@ placeAssets.default = function(){
       }
     }
   } else {
-    placeImage.call(this, this.source, 0)
+    placeImage.call(this, source, 0)
   }
 }
 

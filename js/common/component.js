@@ -1,144 +1,120 @@
 (function(){
-  var debug = KT.System.Options.debug.components;
 
-  var Component = function(params) {
-    var id = params.id,
-        source = params.source,
-        instance = params.instance || source,
-        timeline = params.timeline,
-        type = params.type || 'Component';
-    this.id = id;
-    this.type = type;
-    this.data = {
-      position: [],
-      anchor: [],
-      rotation: [],
-      size: [],
-      scale: []
-    };
-    
-    
-    this.components = [];
-    
-    this.getId =  function() { return id };
-    this.getSource = function() { return source };
-    this.getTimeline = function() { return timeline };
-    this.getInstance = function() { return instance};
-    this.getChildrenLength = function() {return 0}
-    this.setSource = function(newSource) { source = newSource };
-    this.setInstance = function(newInstance) { instance = newInstance};
-  };
-
-  function inspect( exportAsset) {
-    KT.Interface.implements(this, KT.Interfaces.Component, KT.Interfaces.Exportable)
-    this.getData();
-    this.addChildren();
-    if(exportAsset) {
-      this.export()
-    }
-    for (var i = 0, len = components.length; i < len; i++) {
-      this.components[i].inspect(exportAsset);
-    }   
-  };
-
-
-  function exportAsset() {
-   
-  }
-
-  function algorithm() {
-    var algorithmID = arguments[0],
-        alg = KT.Algorithm(algorithmID),
-        deep = typeof arguments[1] === 'boolean' ? arguments[1] : true,
-        rest = Array.prototype.slice.call(arguments, 2),
-        child;
-    if(deep === true) {
-      for(var i = 0, len = this.components.length; i < len; i++) {
-        child = this.components[i];
-        child.algorithm.apply(child, arguments);
-      }
-    }
-    
-    if(_.isFunction(alg)) {
-      
-      if(_.isFunction(alg[this.type])){
-        alg[this.type].apply(this, rest)
-      } else {
-        alg.default.apply(this, rest);
-      }
-    }
-
-  }
-
-
-  function isLeaf(source) {
-    var isLeaf = KT.Tags.check('leafs', source);
-    return isLeaf;
-  }
-
-
-  Component.prototype = {
-    inspect: function(exportAsset) {
-      inspect.call(this, exportAsset);
-    },
-    addChild: function(child) {
-      if(!child) return
-      if(debug.strict === true) {
-        KT.Interface.implements(child, KT.Interfaces.Component, KT.Interfaces.Exportable);
-      }
-      this.components.push(child);
-    },
-    export: function() {
-      exportAsset.call(this)
-    },
-    isLeaf: function(source) {
-      return isLeaf(source)
-    },
-    algorithm: function() {
- 
-      algorithm.apply(this, arguments)
-    },
-
-    hasSymbols: function() {
-      var i = 0,
-          len = this.components.length,
-          hasSymbols = false;
+function algorithm(){
+  var algorithmID = arguments[0],
+      alg = KT.Algorithm(algorithmID),
+      fromRoot = _.isBoolean(arguments[1]) ? arguments[1] : false,
+      rest = Array.prototype.slice.call(arguments, 2),
+      i = fromRoot ? this.components.length - 1 : 0,
+      len = fromRoot ? this.components.length  : 0,
+      type;
   
-      for(; i < len; i++) {
-        
-        if(hasSymbols === true) break;
-        hasSymbols = this.components[i].type === 'Symbol';
-      }
-     
-      return hasSymbols
-    },
-    removeChildren: function() {
-      this.components = []
-    },
-    printData: function(store){
-      var store = store || {},
-          i = 0,
-          len = this.components.length;
-      store.type = this.type;
-      store.id = this.getId();
-      store.isDataLayer = this.isDataLayer || false;
-      store.data = this.data;
-      if(this.isMask) {store.isMask = true}
-      if(this.isGuide) {store.isGuide = true}
-      if(this.isFolder) {store.isFolder = true}
-      store.components = [];
-      
-      // KT.Debug(this.getId() + ': ' + len)
-      for(; i < len; i++){
-       
-        store.components.push(this.components[i].printData());
-      }
-      return store
+  traverse(function(component) {
+    type = component.get('type')
+    if(_.isFunction(alg[type])){
+      alg[type].apply(component, rest)
+    } else {
+      alg.default.apply(component, rest);
     }
- 
+  }, !fromRoot, this);
+}
+
+function traverse (predicate, fromLeafs, context) {
+  var context = context ? context : this,
+      predicate = _.toCallback(predicate),
+      fromLeafs = _.isBoolean(fromLeafs) ? fromLeafs : false,
+      components = context.components,
+      i = fromLeafs ? 0 : components.length - 1,
+      len = fromLeafs ?  components.length : 0,
+      id = context.get('id'),
+      result,
+      child;
+  if(components.length === 0) {
+    predicate(context);
+    return
   }
 
-  KT.Components.Component = Component;
+  !fromLeafs && predicate(context)
+  
+  for(; fromLeafs ? i < len : i >= len; fromLeafs ? i++ : i--) {
+    child = context.components[i];
+    child.traverse(predicate, fromLeafs);
+  }
+  fromLeafs && predicate(context);
+  return result
+}
+
+function findChildren(predicate, store, context) {
+  var store = _.isArray(store) ? store : [],
+      predicate = _.toCondition(predicate),
+      context = context ? context : this;
+  
+  traverse(function(child) {
+    var found = predicate(child)
+    if(found) {
+      store.push(child)
+    }
+    if(child.components.length > 0) {
+      child.traverse(predicate, store)
+    }
+  }, false, conext)
+  return store
+}
+
+function findChildrenByName(){
+  var names = _.isArray(arguments[0]) ? arguments[0] : _.flatten(Array.prototype.slice.call(arguments)),
+      children = findChildren(function(child) {
+        var found = _.find(names, function(name){
+          return name === child.getId();
+        })
+        return found ? true : false
+      })
+  
+  return children;
+}
+
+var Component = function(params) {
+  var props = {
+        id: params.id,
+        source: params.source,
+        type: params.type || "Component"
+      }
+
+  this.components = [];
+
+  this.get = function(prop) { return props[prop]}
+  this.set = function(prop, value) { props[prop] = value }
+  this.delete = function(prop) {
+    if(props[prop]) {
+      delete props[prop]
+    }
+  }
+}
 
 
+Component.prototype = {
+  addChild: function(child) {
+    if(!(child instanceof Component)) { return }
+    this.components.push(child);
+    return child
+  },
+  algorithm: function(){
+    return algorithm.apply(this, arguments)
+  },
+  byName: function(){
+    return findChildrenByName.apply(this, arguments)
+  },
+  find: function() {
+    return findChildren.applt(this, arguments)
+  },
+  traverse: function(){
+    return traverse.apply(this, arguments)
+  }
+}
+
+
+
+
+KT.Components = {};
+KT.Components.Component = Component;
 })();

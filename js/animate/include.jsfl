@@ -88,7 +88,7 @@
      'animate/core/animator-interface',
      'animate/core/utils',
      'animate/core/path',
-     'animate/core/component',
+     'animate/core/animate-component',
      'animate/collector/SymbolComponent'
    ]);
    KT.Include.module('animate/interfaces');

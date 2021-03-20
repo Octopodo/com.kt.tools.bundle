@@ -1,0 +1,43 @@
+(function(){
+
+  var superClass = KT.Components.Component;
+  function addChildren() {
+    var children = this.get('children'),
+        i = 0,
+        len = children.length,
+        child,
+        component;
+
+    for(; i < len; i++) {
+      component = KT.Components.PS.create(children[i]);
+      component.set('parent', this);
+      this.addChild(component);
+      component.addChildren()
+    }
+    this.delete('children');
+  }
+
+
+  var PSComponent = function(data) {
+    superClass.call(this, data)
+    this.set('children', data.components);
+    this.set('isDataLayer',  data.isDataLayer);
+    this.set('data', data.data);
+    this.set('isMask', data.isMask);
+    this.set('isFolder', data.isFolder);
+    this.set('isGuide', data.isGuide);
+    this.set('isVisible', data.isVisible);
+
+    this.components = [];
+  };
+  KT.Extend(PSComponent, superClass)
+
+
+  PSComponent.prototype.addChildren = function(data) {
+    return addChildren.call(this, data)
+  }
+  KT.Components.PS = {}
+  KT.Components.PS.Component = PSComponent;
+
+
+})();

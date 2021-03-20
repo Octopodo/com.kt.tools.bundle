@@ -1,8 +1,7 @@
 
 KT.Commands = {};
-
 #include "underscore_plus.jsxinc"
 #include "IO.jsxinc"
-#include "component.jsxinc"
+#include "ps-component.jsxinc"
 
 

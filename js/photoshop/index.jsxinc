@@ -1,13 +1,4 @@
-var KT = {}
-#include "../common/json2.js"
-#include "../common/underscore.js"
-#include "../common/math.js"
-#include "../common/patterns.js"
-#include "../common/algorithm.js"
-#include "../common/regexp.js"
-
-
-
+#include "../common/index.jsxinc"
 #include "constants/index.jsxinc"
 #include "core/index.jsxinc"
 #include "api/index.jsxinc"

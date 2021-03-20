@@ -1,6 +1,6 @@
 (function() {
 
-var superClass = KT.Components.Component;
+var superClass = KT.Components.PS.Component;
 
 function MaskComponent(data) {
   superClass.call(this, data)
