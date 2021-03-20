@@ -2,7 +2,7 @@
 
 var paths = {};
 function ExportSymbol(path) {
-  if(this.type !== 'Group' && this.components.length > 0  ) return
+  if(this.type !== 'Group' && this.components.length > 0  || this.getId().match(/export all/gi)) return
   var source = this.getSource(),
       path = path + '/' + this.getId();
       
@@ -28,11 +28,13 @@ function ExportLayer(path) {
         path: 'KT_Backup'
       }),
       newLayer = newSource.timeline.layers[0],
-      toSequence = KT.Frames({source: newLayer}).keys().length > 1;
+      toSequence = KT.Frames({source: newLayer}).keys().length > 1,
+      visible = newLayer.visible;
   if(!toSequence) {
 
     newSource.timeline.removeFrames(1, newLayer.frames.length + 1)
   }
+  newLayer.visible = true;
   this.setSource(newSource)
   
   ExportSymbol.call(this, path)
@@ -73,7 +75,7 @@ function ExportGroup(path) {
   }
   
   
-  if(this.getId() === 'Character') {KT.Debug('Exporting fukn folder')}
+  // if(this.getId() === 'Character') {KT.Debug('Exporting fukn folder')}
   this.setSource(newSource);
   
   if(this.getSource().layerType !== 'folder' && this.isDataLayer === false) {

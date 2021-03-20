@@ -1,0 +1,33 @@
+(function(){
+
+function ComponentFactory(data) {
+    var component;
+  
+  switch(data.type){
+  case 'Symbol':
+  case 'Layer':
+    component = new KT.Components.PS.Symbol(data);
+    break;
+  case 'Group':
+    if(data.isMask) {
+      component = new KT.Components.PS.Mask(data);
+    } else if(data.isGuide) {
+      component = new KT.Components.PS.Guide(data);
+    } else if(data.isFolder) {
+      component = new KT.Components.PS.Folder(data);
+    } else {
+      component = new KT.Components.PS.Component(data)
+    }
+    break;
+  case 'Timeline':
+    component = new KT.Components.PS.Timeline(data);
+    break;
+  default:
+    component = new KT.Components.PS.Component(data)
+  }
+
+  return component;
+}
+
+KT.Components.PS.create = ComponentFactory;
+})();

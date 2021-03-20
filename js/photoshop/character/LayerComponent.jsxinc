@@ -1,0 +1,12 @@
+(function() {
+
+var superClass = KT.Components.Component;
+
+function LayerComponent(data) {
+  superClass.call(this, data)
+}
+
+KT.Extend(LayerComponent, superClass)
+
+KT.Components.PS.Layer = LayerComponent
+})();

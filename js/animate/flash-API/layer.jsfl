@@ -266,11 +266,11 @@ function getLayers(opts) {
 function getChildren(folder, timeline, callback) {
   KT.Verbose(arguments)
   var folder = KT.Layers(folder)[0],
-      match = folder.layerType ? folder.layerType.match(/folder|mask|guide/g) : null,
+      match = _.isGroupLayer(folder) ||  null,
       timeline = KT.Document.getTimeline(timeline),
       callback = _.isFunction(callback) ? callback : function(){},
       layers = [];
-  
+
   if(match !== null) {
     layers = KT.Layers({
       timeline: timeline,
@@ -280,6 +280,7 @@ function getChildren(folder, timeline, callback) {
       },
     })
   }
+
   return layers
 }
 

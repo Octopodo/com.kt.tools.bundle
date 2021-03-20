@@ -1,0 +1,13 @@
+KT.Components.PS = {};
+
+#include "FolderComponent.jsxinc"
+#include "LayerComponent.jsxinc"
+#include "MaskComponent.jsxinc"
+#include "SymbolComponent.jsxinc"
+#include "TimelineComponent.jsxinc"
+#include "GuideComponent.jsxinc"
+#include "command-build-character.jsxinc"
+#include "algorithm-import-assets.jsxinc"
+#include "algorithm-place-assets.jsxinc"
+
+#include "PS-ComponentFactory.jsxinc"

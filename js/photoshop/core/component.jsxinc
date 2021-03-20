@@ -1,0 +1,174 @@
+(function(){
+
+  
+
+
+  function addChildren() {
+    var child,
+        i = 0,
+        len = this.children.length,
+        component;
+
+    for(; i < len; i++) {
+      component = KT.Components.PS.create(this.children[i]);
+      component.parent = this;
+      this.addChild(component);
+      component.addChildren()
+    }
+    delete this.children;
+  }
+
+  function traverse (predicate) {
+    var predicate = _.toCondition(predicate);
+        
+    _.each(this.components, function(child) {
+      predicate(child);
+      if(child.components.length > 0) {
+        child.traverse( predicate);
+      }
+      
+    });
+
+  }
+
+  function findChildren(store, predicate) {
+    var store = _.isArray(store) ? store : [],
+        predicate = _.toCondition(predicate);
+        
+    _.each(this.components, function(child) {
+      var found = predicate(child);
+
+      if(found) {
+        store.push(child)
+      }
+      if(child.components.length > 0) {
+        child.findChildren(store, predicate);
+      }
+      
+    });
+
+    return store
+  }
+  function findChildren(store, predicate) {
+    var store = _.isArray(store) ? store : [],
+        predicate = _.toCondition(predicate);
+        
+    traverse(function(child){
+      var found = predicate(child);
+
+      if(found) {
+        store.push(child)
+      }
+      if(child.components.length > 0) {
+        child.findChildren(store, predicate);
+      }
+      
+    });
+
+    return store
+  }
+
+  function findChildrenByName() {
+    var names = _.isArray(arguments[0]) ? arguments[0] : _.flatten(Array.prototype.slice.call(arguments)),
+        children;
+
+    children = findChildren.call(this, [], function(child){
+      var found = _.find(names, function(name) {
+        return name === child.id;
+      })
+      return found ? true : false
+    })
+    return children;
+  }
+
+  var Component = function(data) {
+    var id = data.id,
+        source = data.source,
+        type = data.type || 'Component',
+        isDataLayer = data.isDataLayer;
+
+
+    this.children = data.components;
+    this.id = id;
+    this.type = type;
+    this.isDataLayer = isDataLayer;
+    this.data = data.data;
+    this.isMask = data.isMask;
+    this.isFolder = data.isFolder;
+    this.isGuide = data.isGuide;
+    this.isVisible = data.isVisible;
+    this.components = [];
+    
+    this.getId =  function() { return id };
+    this.getSource = function() { return source };
+    this.setSource = function(newSource) { source = newSource };
+  };
+
+
+  function algorithm() {
+    var algorithmID = arguments[0],
+        alg = KT.Algorithm(algorithmID),
+        rev = typeof arguments[1] === 'boolean' ? arguments[1] : false,
+        rest = Array.prototype.slice.call(arguments, 2),
+        child;
+    if(rev === false) {
+      for(var i = 0, len = this.components.length; i < len; i++) {
+        child = this.components[i];
+        child.algorithm.apply(child, arguments);
+      }
+    }
+    
+    if(_.isFunction(alg)) {
+      
+      if(_.isFunction(alg[this.type])){
+        alg[this.type].apply(this, rest)
+      } else {
+        alg.default.apply(this, rest);
+      }
+    }
+    if(rev === true) {
+      for(var i = this.components.length -1; i >= 0; i--) {
+        child = this.components[i];
+        child.algorithm.apply(child, arguments);
+      }
+    }
+  }
+
+
+
+  Component.prototype = {
+
+    addChild: function(child) {
+      if(!child) return
+      this.components.push(child);
+    },
+
+    addChildren: function(data) {
+      return addChildren.call(this, data)
+    },
+    algorithm: function() {
+      algorithm.apply(this, arguments)
+    },
+
+    findChildren: function(store, predicate) {
+      return findChildren.call(this, store, predicate)
+    },
+
+    findByName: function() {
+      return findChildrenByName.apply(this, arguments)
+    },
+
+    removeChildren: function() {
+      this.components = []
+    },
+    traverse: function() {
+      return traverse.apply(this, arguments)
+    }
+
+  }
+
+  KT.Components = {};
+  KT.Components.Component = Component;
+
+
+})();

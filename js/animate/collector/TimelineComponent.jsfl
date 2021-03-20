@@ -15,7 +15,7 @@
       this.addChild(child);
       child.addChildren();
       i += child.getChildrenLength();
-      KT.Debug(child.getId() + ': ' + child.getChildrenLength())
+      // KT.Debug(child.getId() + ': ' + child.getChildrenLength())
     }
   }
 

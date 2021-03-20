@@ -49,6 +49,7 @@
       layers: this.getSource(),
       timeline: this.getTimeline
     }).getDataLayers().length > 0;
+    this.isVisible = this.getSource().visible;
   };
   KT.Extend(LayerComponent, superClass);
 

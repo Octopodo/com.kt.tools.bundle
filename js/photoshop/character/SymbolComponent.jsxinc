@@ -1,0 +1,12 @@
+(function() {
+
+var superClass = KT.Components.Component;
+
+function SymbolComponent(data) {
+  superClass.call(this, data)
+}
+
+KT.Extend(SymbolComponent, superClass)
+
+KT.Components.PS.Symbol = SymbolComponent
+})();

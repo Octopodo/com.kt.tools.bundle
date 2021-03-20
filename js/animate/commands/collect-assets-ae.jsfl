@@ -21,11 +21,14 @@ function collectAndExport (exportAssets) {
   component.algorithm('Get Timing Data');
   component.algorithm('Unmask');
   component.algorithm('Get Spatial Data');
-  component.algorithm('Remask')
-  component.algorithm('Simplify Ae');
+  component.algorithm('Remask', true)
+  component.algorithm('Simplify');
   component.algorithm('Clear Circular Data');
-  
+  component.algorithm('Clear Helpers')
+  component.isRoot = true;
 
+  // KT.Debug(component)
+  // return
   if(_.isBoolean(exportAssets) && exportAssets === false) return;
   path = KT.IO.createFolder(path + '/' + component.getId());
   if(!path) {

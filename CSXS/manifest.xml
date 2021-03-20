@@ -27,7 +27,7 @@
             <DispatchInfo Host="PHXS">
                 <Resources>
                     <MainPath>./public/index-dev.html</MainPath>
-                    <ScriptPath>./js/photoshp/index.jsxinc</ScriptPath>
+                    <ScriptPath>./js/PHOTOSHOP/index.jsxinc</ScriptPath>
     
                 </Resources>
                 <Lifecycle>
@@ -57,7 +57,7 @@
             <DispatchInfo Host="FLPR">
                 <Resources>
                     <MainPath>./public/index-dev.html</MainPath>
-                    <ScriptPath>./js/animate/include.jsfl</ScriptPath>
+                    <ScriptPath>./js/ANIMATE/include.jsfl</ScriptPath>
                     <!-- <CEFCommandLine>
                     </CEFCommandLine> -->
                 </Resources>
@@ -89,7 +89,7 @@
             <DispatchInfo Host="AEFT">
                 <Resources>
                   <MainPath>./public/index-dev.html</MainPath>
-                  <ScriptPath>./js/after-effects/index.jsxinc</ScriptPath>
+                  <ScriptPath>./js/AFTER-EFFECTS/index.jsxinc</ScriptPath>
                 </Resources>
                 <Lifecycle>
                     <AutoVisible>true</AutoVisible>

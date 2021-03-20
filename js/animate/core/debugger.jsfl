@@ -57,7 +57,9 @@ function debug(){
 
   for(; i < len; i++) {
     argument = arguments[i];
-    argument = verbLevel(VERB_LEVEL_LOW) ? inspect(argument) : argument;
+    argument = verbLevel(VERB_LEVEL_LOW) ? inspect(argument) 
+              :_.isFunction(argument) ? 'Function: ' + argument.name
+              : argument;
     log(argument)
   }
   debugLine++ 
@@ -113,7 +115,7 @@ function log(){
   var i = 0,
       len = arguments.length,
       line;
-
+  
   for(; i < len; i++) {
     line = lineStart + JSON.stringify(arguments[i], null, TAB_SPACING);
     debugLog += line + NEW_LINE;

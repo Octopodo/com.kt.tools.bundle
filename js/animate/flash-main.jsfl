@@ -19,15 +19,9 @@ KT.execute = function(){
 }
 
 KT.Test = function () {
-  // KT.Commands.collectAndExportAE();
-  var component = KT.Components.create( { source:  KT.Document.getTimeline()});
-  component.addChildren();
-  component.algorithm('Get Timing Data')
-  component.algorithm('Clear Circular Data');
-  component.algorithm('Clear By Type', null, 'Asset');
-  component.algorithm('Clear By Name', null, 'Capa_1');
-  component.algorithm('Symplify')
-  // KT.Debug(component)
+  KT.Commands.collectAndExportAE();
+
+
 };
 
 

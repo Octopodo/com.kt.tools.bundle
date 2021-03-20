@@ -44,7 +44,7 @@ function createSymbolFromLayers(opts) {
       replacedLayer,
       element;
 
-  KT.Debug(layers[0].name + ' ' + index)
+  // KT.Debug(layers[0].name + ' ' + index)
   //Perform
   layers[copyAction]();
   layers.paste(newSymbol);
@@ -293,8 +293,8 @@ function removeScenes(filter) {
 KT.Document =  function() {
   return an.getDocumentDOM()
 }
-
-
+// an.trace('DOCUMENT')
+// an.trace(KT.Document)
 
 /** Class to make easier to do things with document and symbols. 
  * @namespace

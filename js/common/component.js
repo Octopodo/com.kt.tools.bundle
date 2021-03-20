@@ -24,6 +24,7 @@
     this.getSource = function() { return source };
     this.getTimeline = function() { return timeline };
     this.getInstance = function() { return instance};
+    this.getChildrenLength = function() {return 0}
     this.setSource = function(newSource) { source = newSource };
     this.setInstance = function(newInstance) { instance = newInstance};
   };
@@ -48,10 +49,10 @@
   function algorithm() {
     var algorithmID = arguments[0],
         alg = KT.Algorithm(algorithmID),
-        rev = typeof arguments[1] === 'boolean' ? arguments[1] : false,
+        deep = typeof arguments[1] === 'boolean' ? arguments[1] : true,
         rest = Array.prototype.slice.call(arguments, 2),
         child;
-    if(rev === false) {
+    if(deep === true) {
       for(var i = 0, len = this.components.length; i < len; i++) {
         child = this.components[i];
         child.algorithm.apply(child, arguments);
@@ -66,12 +67,7 @@
         alg.default.apply(this, rest);
       }
     }
-    if(rev === true) {
-      for(var i = this.components.length -1; i >= 0; i--) {
-        child = this.components[i];
-        child.algorithm.apply(child, arguments);
-      }
-    }
+
   }
 
 
@@ -98,7 +94,6 @@
     isLeaf: function(source) {
       return isLeaf(source)
     },
-    getChildrenLength: function() {return 0},
     algorithm: function() {
  
       algorithm.apply(this, arguments)
@@ -128,8 +123,6 @@
       store.id = this.getId();
       store.isDataLayer = this.isDataLayer || false;
       store.data = this.data;
-      store.isRoot = this.isRoot; 
-      store.isVisible = this.isVisible;
       if(this.isMask) {store.isMask = true}
       if(this.isGuide) {store.isGuide = true}
       if(this.isFolder) {store.isFolder = true}

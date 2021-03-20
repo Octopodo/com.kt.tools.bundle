@@ -1,0 +1,76 @@
+(function(){
+var movileParts = [
+  'mouth',
+  'hair',
+  'pupil',
+  'eyebrow',
+  'eye',
+  'pupil',
+  'arm'
+];
+var hideParts = [
+  'Blink',
+  'Open 2', 'Open 3',
+  'Lid Mask',
+  'Smile', 'L', 'F', 'U', 'R', 'O', 'A', 'E', 'I', 'D', 'S', 'M'
+]
+
+function conformCharacter(document) {
+  var _movileParts = KT.RegExp(movileParts),
+      _hideParts = KT.RegExp(hideParts, true, 'g' )
+      document = KT.Document(document);
+  
+  KT.Layers.traverse(document, function(layer){
+    var movile = layer.name.match(_movileParts);
+    var hide = layer.name.match(_hideParts);
+    
+    layer.name = movile !== null ? '+ ' + layer.name : layer.name;
+    layer.visible = hide !== null ? false : layer.visible
+    
+  })
+
+}
+
+
+function importFlashScene() {
+  var data = KT.IO.readFileDialog('Select a KT data.file'),
+      component;
+
+  if(!data) return;
+  data = JSON.parse(data);
+  component = KT.Components.PS.create(data);
+  component.addChildren();
+  return component
+}
+
+function BuildCharacter(sceneName) {
+  var character = importFlashScene(sceneName),
+      document;
+  if(!character) return;
+  preferences.rulerUnits = Units.PIXELS;
+  document = KT.Document(character.id) || KT.Document({
+    width: character.data.size[0].width,
+    height: character.data.size[0].height,
+    resolution: 72,
+    name: character.id,
+  })
+
+  character.algorithm('PS: Import Assets', true);
+  character.algorithm('PS: Place Assets');
+  character.traverse(function(child){
+    if(_.isBoolean(child.isVisible)) {
+      child.source.visible = child.isVisible
+    }
+  })
+  // if(!character)  return;
+  // character.algorithm('Flash: Build Assets');
+  // character.algorithm('Flash: Place Assets', true);
+}
+
+
+BuildCharacter.conformCharacter = conformCharacter;
+
+KT.Commands.BuildCharacter = BuildCharacter;
+KT.Commands.ImportFlashScene = importFlashScene;
+
+})();

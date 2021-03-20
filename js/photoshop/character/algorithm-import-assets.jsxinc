@@ -1,0 +1,161 @@
+(function(){
+
+function findAncestor() {
+  var ancestor = _.isFolder(this.source) ? this.parent : this;
+  while( !ancestor.isRoot && !_.isFolder(ancestor.source)) {
+    ancestor =  ancestor.parent;
+  }
+  return ancestor !== this ? ancestor : null
+}
+
+function importImage(){
+  var document = KT.Document(),
+      folder = new Folder(this.data.path),
+      files = folder.getFiles(),
+      image,
+      ancestor = this;
+
+  if(files.length <= 0) return;
+
+  this.source = KT.Document.import(files[0]);
+  this.source.name = this.id;
+  ancestor = findAncestor.call(this);
+  ancestor && KT.Layers.setParent(ancestor.source, this.source)
+}
+
+
+function importSequence(){
+  var document = KT.Document();
+    var folder = new Folder(this.data.path),
+        files = folder.getFiles(),
+        timing = this.data.timing.frames,
+        labels = this.data.timing.labels,
+        tLen = timing.length, 
+        fLen = files.length,
+        lastFile,
+        t = 0,
+        image,
+        file,
+        frame,
+        frameSet,
+        isFrameSet,
+        time,
+        name, 
+        ancestor = this,
+        self = this;
+
+  if(files.length <= 0) return;
+  this.source = document.layerSets.add();
+  this.source.name = this.id;
+  this.frames = [];
+  
+  ancestor = findAncestor.call(this);
+  ancestor && KT.Layers.setParent(ancestor.source, this.source)
+  // if(this.id === 'Happy') $.bp()
+  for(; t < tLen; t++) {
+    time = timing[t];
+    label = labels[t];
+    numFiles = t < tLen ? timing[t +1] - time : fLen - time;
+    isFrameSet = numFiles > 1;
+    lastFile = isFrameSet ? time + numFiles : time + 1;
+    frameSet = [];
+    folder = isFrameSet ? document.layerSets.add() : this.source;
+    folder.name = isFrameSet ? label : folder.name;
+    isFrameSet && KT.Layers.setParent(this.source, folder);
+    
+    for(; time < lastFile; time++) {
+      file = files[time] || files[0] ;
+      frame = KT.Document.import(file);
+      frame.name = isFrameSet ? time : label;
+      KT.Layers.setParent(folder, frame);
+      frameSet.push(frame);
+    }
+
+    this.frames.push(frameSet);
+  }
+}
+
+
+
+function importAssets() {};
+importAssets.default = function(){
+  var document = KT.Document();
+  var self = this;
+  if(!this.data.path) {
+    var parent;
+    if(this.isDataLayer === true) return;
+    this.source = document.layerSets.add();
+    this.source.name = this.id;
+    
+    if(this.parent && this.parent.source && _.isFolder(this.parent.source)) {
+      KT.Layers.setParent(this.parent.source, this.source)
+    }
+
+  } else {
+    if(this.data.timing && this.data.timing.frames.length > 1) {
+      importSequence.call(this)
+    } else {
+      importImage.call(this)
+    }
+  }
+
+}
+
+
+KT.Algorithm.register('PS: Import Assets', importAssets);
+
+})();
+
+
+// function importSequence(){
+//   var document = KT.Document();
+//     var folder = new Folder(this.data.path),
+//         files = folder.getFiles(),
+//         timing = this.data.timing.frames,
+//         labels = this.data.timing.labels,
+//         image,
+//         file,
+//         frame,
+//         frameSet,
+//         name, 
+//         ancestor = this,
+//         self = this;
+
+//   if(files.length <= 0) return;
+//   this.source = document.layerSets.add();
+//   this.source.name = this.id;
+//   this.frames = [];
+  
+//   ancestor = findAncestor.call(this);
+//   ancestor && KT.Layers.setParent(ancestor.source, this.source)
+
+
+
+//   _.each(timing, function(time, i, timing){
+//     var label = labels[i] === "" ? i : labels[i],
+//         time = time, 
+//         len = files.length,
+//         numFiles = i < timing.length ? timing[i +1] - time : len - time,
+//         lastFile = time + numFiles,
+//         folder,
+//         file = files[time] || files[0];
+
+//     if(numFiles > 1) {
+//       folder = document.layerSets.add();
+//       folder.name = label;
+//       KT.Layers.setParent(self.source, folder);
+//       for(; time < lastFile; time++) {
+//         file = files[time] || file;
+//         file = KT.Document.import(file);
+//         file.name = time;
+//         KT.Layers.setParent(folder, file);
+//         self.frames.push(file);
+//       }
+//     } else {
+//       file = KT.Document.import(file);
+//       file.name = label;
+//       KT.Layers.setParent(self.source, file);
+//       self.frames.push(file);
+//     }
+//   })
+// }

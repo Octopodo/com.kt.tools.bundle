@@ -8,19 +8,27 @@
 
 
 function UnmaskChildren() {
-  if(!this.isMask && !this.isGuide) return;
   var source = this.getSource(),
       timeline = this.getTimeline();
-
   this.tempData = this.tempData || {};
-  this.tempData.childLayers = KT.Layers.getChildren(source, timeline)
+  this.tempData.isVisible = this.type === 'Layer' || this.type === 'Group' ? source.visible : null;
+  source.visible = true;
 
+  if(!this.isMask && !this.isGuide) return;
+  
+  this.tempData.childLayers = KT.Layers.getChildren(source, timeline)
   source.layerType = 'normal'
+  
 }
 
 function RemaskChildren() {
-  if((!this.isMask && !this.isGuide)|| !this.tempData) return
   var source = this.getSource();
+  if(_.isBoolean(this.tempData.isVisible)){
+    source.visible = this.tempData.isVisible;
+
+  }
+  if((!this.isMask && !this.isGuide)|| !this.tempData) return
+  
   source.layerType = 'mask';
   _.each(this.tempData.childLayers, function(layer){
     layer.parentLayer = source;
@@ -31,7 +39,10 @@ function RemaskChildren() {
 var Unmask = function(){}
 var Remask = function(){}
 Unmask.Group = UnmaskChildren;
+Unmask.Layer = UnmaskChildren;
+Remask.Layer = RemaskChildren;
 Remask.Group = RemaskChildren;
+
 KT.Algorithm.register('Unmask', Unmask)
 KT.Algorithm.register('Remask', Remask)
 

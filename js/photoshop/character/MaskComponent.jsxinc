@@ -1,0 +1,12 @@
+(function() {
+
+var superClass = KT.Components.Component;
+
+function MaskComponent(data) {
+  superClass.call(this, data)
+}
+
+KT.Extend(MaskComponent, superClass)
+
+KT.Components.PS.Mask = MaskComponent
+})();

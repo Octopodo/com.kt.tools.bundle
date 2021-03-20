@@ -1,0 +1,12 @@
+(function() {
+
+var superClass = KT.Components.Component;
+
+function TimelineComponent(data) {
+  superClass.call(this, data)
+}
+
+KT.Extend(TimelineComponent, superClass)
+
+KT.Components.PS.Timeline = TimelineComponent
+})();

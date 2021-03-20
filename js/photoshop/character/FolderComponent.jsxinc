@@ -1,0 +1,12 @@
+(function() {
+
+var superClass = KT.Components.Component;
+
+function FolderComponent(data) {
+  superClass.call(this, data)
+}
+
+KT.Extend(FolderComponent, superClass)
+
+KT.Components.PS.Folder = FolderComponent
+})();

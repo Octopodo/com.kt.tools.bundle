@@ -3,13 +3,12 @@
 
 function unify(components) {
   
-  var unified = _.groupBy(components, 'id'),
+  var unified = _.groupBy(components, function(child){ return child.getSource().libraryItem}),
       i, j, jLen,
       component,
       item,
       uniq = [];
 
-  KT.Debug('UNIFIED', unified)
   for(i in unified) {
     component = unified[i][0];
     
@@ -50,10 +49,7 @@ function SimplifyLayer(opts) {
 
   //IF clean simplify, only one item per layer is allowed.
   //If only are elements, simplify the layer.
-  if(clean === true && (
-       (types.symbols === true && types.elements === true)
-    || (types.symbols === false && types.elements === true)
-  )){
+  if(clean === true && types.elements === true){
     this.removeChildren();
     return
   }
@@ -121,7 +117,7 @@ function SimplifySymbol(opts) {
     
   }
 
-  if(this.type !== 'Group' && clean  && !hasSymbols && !hasSequences && cleanSymbols) {
+  if(this.type !== 'Group' && clean  && !hasSymbols  && !hasSequences && cleanSymbols) {  //
     this.removeChildren();
     
     return

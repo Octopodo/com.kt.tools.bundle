@@ -19,7 +19,6 @@
         elementAnchor,
         anchorPoint;
 
-
     if(elements.length === 0) return elementAnchor
     anchorPoint = getAnchor(elements[0]);
     
@@ -31,7 +30,7 @@
         anchorPoint.x = anchorPoint.x  + elementAnchor.x;
         anchorPoint.y = anchorPoint.y  + elementAnchor.y;
       }
-
+      
       anchorPoint.x = anchorPoint.x / len
       anchorPoint.y = anchorPoint.y / len
     }
@@ -44,11 +43,10 @@
           rotation = element.rotation,
           x = element[xProp],
           y = element[yProp]
-
       element.rotation -= rotation;
       if(isShape) {
-        anchor.x = KT.toFixed(element.width / 2) - element.left;
-        anchor.y = KT.toFixed(element.height / 2) - element.top;
+        anchor.x = KT.toFixed(element.width / 2);
+        anchor.y = KT.toFixed(element.height / 2);
 
       } else {
         element[xProp] = 0;
