@@ -3,7 +3,7 @@ var superClass = KT.Components.Component;
 
 var ANComponent = function(params) {
   superClass.call(this, params);
-  this.set('instance', params.instance || source)
+  this.set('instance', params.instance || this.get('source'))
   this.set('timeline', params.timeline)
   this.set('data', {
     position: [],
@@ -14,7 +14,7 @@ var ANComponent = function(params) {
   });
 
 };
-
+KT.Extend(ANComponent, superClass)
 
 ANComponent.prototype.getChildrenLength =  function() {return 0};
 

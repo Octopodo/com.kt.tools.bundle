@@ -2,11 +2,12 @@
 
 var paths = {};
 function ExportSymbol(path) {
+
   if(this.get('type') !== 'Group' && this.components.length > 0  || this.get('id').match(/export all/gi)) return
   var source = this.get('source'),
       id = this.get('id'),
       data = this.get('data'),
-      path = path + '/' + id;
+      path = path + '/' + this.getPath();
       
   data.path = FLfile.uriToPlatformPath(path).replace(/\\/g, '/') ; 
   

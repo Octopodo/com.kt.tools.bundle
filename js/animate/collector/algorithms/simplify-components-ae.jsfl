@@ -3,11 +3,12 @@
 
 function unify(components) {
   
-  var unified = _.groupBy(components, function(child){ return child.getSource().libraryItem}),
+  var unified = _.groupBy(components, function(child){ return child.get('source').libraryItem}),
       i, j, jLen,
       component,
       item,
       data,
+      itemData,
       uniq = [];
 
   for(i in unified) {
@@ -15,11 +16,12 @@ function unify(components) {
     data = component.get('data');
     for(j = 1, jLen = unified[i].length; j < jLen; j++) {
       item = unified[i][j];
-      data.position.push(item.data.position);
-      data.anchor.push(item.data.anchor);
-      data.rotation.push(item.data.rotation);
-      data.size.push(item.data.size);
-      data.path = item.data.path
+      itemData = item.get('data');
+      data.position.push(itemData.position);
+      data.anchor.push(itemData.anchor);
+      data.rotation.push(itemData.rotation);
+      data.size.push(itemData.size);
+      data.path = itemData.path
     }
 
     uniq.push(component)
@@ -105,9 +107,9 @@ function SimplifySymbol(opts) {
     }
     if( childType === 'Layer' && child.components.length === 1 && !isDataLayer) {
       
-      if( KT.Frames({source: childSource, keys: true}).length > 1 ) {
-        child.components[0].set('data', childData);
-      }
+      // if( KT.Frames({source: childSource, keys: true}).length > 1 ) {
+      //   child.components[0].set('data', childData);
+      // }
       this.components.splice(i, 1, child.components[0]);
       continue;
     }

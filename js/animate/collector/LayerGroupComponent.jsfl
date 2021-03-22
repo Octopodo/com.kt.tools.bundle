@@ -1,6 +1,6 @@
 (function() {
   //Defiine the superclass
-var superClass = KT.Components.Component;
+var superClass = KT.Components.AN.Component;
 
 
 function addChildren() {
@@ -14,7 +14,7 @@ function addChildren() {
 
   for(; i < len; i++) {
     
-    child = KT.Components.create({
+    child = KT.Components.AN.create({
       source: layers[i],
       timeline: timeline
     });
@@ -32,7 +32,7 @@ function getChildrenLength () {
   var len = this.components.length,
       i = 0,
       child,
-      length = KT.Layers.getChildren( this.getSource(), this.getTimeline()).length
+      length = KT.Layers.getChildren( this.get('source'), this.get('timeline')).length
   
   for(; i < len; i++) {
     child = this.components[i];
@@ -57,13 +57,13 @@ var LayerGroupComponent = function(params) {
 
 
   this.isDataLayer = KT.Layers({
-    layers: this.getSource(),
-    timeline: this.getTimeline
+    layers: this.get('source'),
+    timeline: this.get('timeline')
   }).getDataLayers().length > 0;
 
-  this.isMask = layer.layerType === 'mask';
-  this.isGuide = layer.layerType === 'guide';
-  this.isFolder= layer.layerType === 'folder';
+  this.set('isMask', layer.layerType === 'mask');
+  this.set('isGuide', layer.layerType === 'guide');
+  this.set('isFolder', layer.layerType === 'folder');
   
   
 
@@ -80,6 +80,6 @@ LayerGroupComponent.prototype.getChildrenLength = function() {
   return getChildrenLength.call(this)
 };
 
-KT.Components.LayerGroup = LayerGroupComponent;
+KT.Components.AN.LayerGroup = LayerGroupComponent;
 
 })();

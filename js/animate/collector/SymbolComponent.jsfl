@@ -8,7 +8,7 @@
         len = layers.length,
         child;
     for(; i < len; i++) {
-      child = KT.Components.create({
+      child = KT.Components.AN.create({
         source: layers[i],
         timeline: source.timeline
       });

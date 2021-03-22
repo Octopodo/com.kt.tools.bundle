@@ -40,6 +40,13 @@ function createDocument(params) {
 }
 
 
+function fitDocumentToLayers(document) {
+  var document = KT.Document(document),
+      layers = Array.prototype.slice.call(arguments, 1),
+      bounds;
+}
+
+
 function importImageJs (path, document) {
   try{
     var file = path instanceof File ? path : new File(path);

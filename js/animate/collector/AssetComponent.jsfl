@@ -1,5 +1,5 @@
 (function() {
-  var superClass = KT.Components.Symbol;
+  var superClass = KT.Components.AN.Symbol;
 
   var AssetComponent = function(params) {
     params.type = params.type || 'Asset';
@@ -10,5 +10,5 @@
 
   AssetComponent.prototype.addChildren = function() {};
 
-  KT.Components.Asset = AssetComponent;
+  KT.Components.AN.Asset = AssetComponent;
 })();

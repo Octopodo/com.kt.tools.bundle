@@ -1,6 +1,6 @@
 (function() {
   //Defiine the superclass
-  var superClass = KT.Components.Component;
+  var superClass = KT.Components.AN.Component;
 
   function addChildren(deep) {
     var source = this.get('source'),
@@ -34,7 +34,7 @@
       child = children[i];
       child.timeline = timeline;
       child.index = i;
-      child = KT.Components.create(child);
+      child = KT.Components.AN.create(child);
       child.set('parent', this);
       this.addChild(child);
       deep && child.addChildren();
@@ -46,10 +46,10 @@
     params.type = params.type || 'Layer';
     superClass.call(this, params);
     this.set('isDataLayer', KT.Layers({
-      layers: this.getSource(),
-      timeline: this.getTimeline
+      layers: this.get('source'),
+      timeline: this.get('timeline')
     }).getDataLayers().length > 0);
-    this.set('isVisible', this.getSource().visible);
+    this.set('isVisible', this.get('source').visible);
   };
   KT.Extend(LayerComponent, superClass);
 
@@ -57,5 +57,5 @@
   LayerComponent.prototype.addChildren =  function(deep) {
     addChildren.call(this, deep)
   },
-  KT.Components.Layer = LayerComponent;
+  KT.Components.AN.Layer = LayerComponent;
 })();

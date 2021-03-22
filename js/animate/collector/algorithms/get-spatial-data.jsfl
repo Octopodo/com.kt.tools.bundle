@@ -83,7 +83,7 @@ SpatialData.Timeline = function(){
   data.rotation.push(0);
   data.size.push({width: size.width, height: size.height});
   data.scale.push({x: 1, y:1})
-  this.setInstance(instance);
+  this.set('instance', instance);
 
   // SpatialData.Symbol.call(this);
 }

@@ -5,6 +5,7 @@ function placeImage(source, index) {
   if(this.get('isDataLayer') === true || !this.get('data').position[index] || !this.get('source') ) return;
   var self = this,
       data = this.get('data'),
+      id = this.get('id'),
       position = data.position[index],
       anchor = data.anchor[index],
       angle = data.rotation[index],

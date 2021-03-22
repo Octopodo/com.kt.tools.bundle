@@ -15,14 +15,14 @@ function createComponent(params) {
 
   switch(params.source.constructor.name) {
   case 'Timeline':
-    component = new KT.Components.Timeline(params)
+    component = new KT.Components.AN.Timeline(params)
     break;
 
   
   case 'SymbolItem:': 
   case 'SymbolInstance':
     params.id = KT.Path.split(params.source.libraryItem.name).name;
-    component = new KT.Components.Symbol(params)
+    component = new KT.Components.AN.Symbol(params)
     break;
 
 
@@ -32,29 +32,30 @@ function createComponent(params) {
     switch(params.source.layerType) {
     case 'folder':
       params.groupType = 'Folder'; 
-      component = new KT.Components.LayerGroup(params);
+      component = new KT.Components.AN.LayerGroup(params);
       break;
     case 'guide':
       params.groupType = 'Guide';
-      component = new KT.Components.LayerGroup(params);
+      component = new KT.Components.AN.LayerGroup(params);
       break;
     case 'mask':
       params.groupType = 'Mask';
-      component = new KT.Components.LayerGroup(params);
+      component = new KT.Components.AN.LayerGroup(params);
       break;
 
     default:
-      component = new KT.Components.Layer(params)
+      component = new KT.Components.AN.Layer(params);
+      break;
     }
     break;
 
   default:
-    component = new KT.Components.Asset(params)
+    component = new KT.Components.AN.Asset(params)
     break;
   }
   return component
 }
 
-KT.Components.create = createComponent;
+KT.Components.AN.create = createComponent;
 
 })();

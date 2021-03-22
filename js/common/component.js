@@ -73,6 +73,18 @@ function findChildrenByName(){
   return children;
 }
 
+function getPath() {
+  var path = this.get('id'),
+      parent = this.get('parent');
+
+  while(parent) {
+    path = parent.get('id') + '/' + path;
+    parent = parent.get('parent')
+  }
+
+  return path
+}
+
 var Component = function(params) {
   var props = {
         id: params.id,
@@ -115,6 +127,9 @@ Component.prototype = {
   },
   traverse: function(){
     return traverse.apply(this, arguments)
+  },
+  getPath: function() {
+    return getPath.call(this)
   }
 }
 

@@ -1,6 +1,7 @@
 var KT = {}
 #include "json2.js"
 #include "underscore.js"
+#include "underscore_plus.js"
 #include "math.js"
 #include "patterns.js"
 #include "algorithm.js"

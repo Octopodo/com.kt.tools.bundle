@@ -13,7 +13,7 @@ function collectAndExport (exportAssets) {
   }
 
   var timeline = KT.Document.getTimeline(),
-      component = KT.Components.create( { source: timeline});
+      component = KT.Components.AN.create( { source: timeline});
       
   component.addChildren();
   component.algorithm('Get Timing Data');
@@ -21,8 +21,7 @@ function collectAndExport (exportAssets) {
   component.algorithm('Get Spatial Data');
   component.algorithm('Remask', true)
   component.algorithm('Simplify');
-  component.algorithm('Clear Circular Data');
-  component.algorithm('Clear Helpers')
+  component.algorithm('Parent Components', true)
   component.isRoot = true;
 
   // KT.Debug(component)
@@ -47,8 +46,10 @@ function collectAndExport (exportAssets) {
     return
   }
   
-  component.algorithm('Export', null, path);
   
+  component.algorithm('Export', null, path);
+  component.algorithm('Clear Circular Data');
+  component.algorithm('Clear Helpers');
   
   dataPath = KT.IO.saveFile(dataPath, JSON.stringify(component.printData(), null, 2));
 
@@ -57,7 +58,7 @@ function collectAndExport (exportAssets) {
     return
   }
 
-  KT.Library.delete('KT_Backup')
+  // KT.Library.delete('KT_Backup')
   KT.Document.editTimeline(timeline)
   
 }
