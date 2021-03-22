@@ -12,11 +12,9 @@ function collectAndExport (exportAssets) {
     return
   }
 
-  
-  
-
   var timeline = KT.Document.getTimeline(),
-      component = KT.Components.create( { source: timeline})
+      component = KT.Components.create( { source: timeline});
+      
   component.addChildren();
   component.algorithm('Get Timing Data');
   component.algorithm('Unmask');
@@ -30,7 +28,7 @@ function collectAndExport (exportAssets) {
   // KT.Debug(component)
   // return
   if(_.isBoolean(exportAssets) && exportAssets === false) return;
-  path = KT.IO.createFolder(path + '/' + component.getId());
+  path = KT.IO.createFolder(path + '/' + component.get('id'));
   if(!path) {
     KT.Debug('Component folder was not created');
     return
@@ -38,7 +36,7 @@ function collectAndExport (exportAssets) {
 
   
 
-  var dataPath = path + '/' + component.getId() + '.kt.json';
+  var dataPath = path + '/' + component.get('id') + '.kt.json';
 
 
   path = path + '/Assets';

@@ -5,20 +5,20 @@ var superClass = KT.Components.Component;
 
 function addChildren() {
   
-  var source = this.getSource(),
-      timeline = this.getTimeline(),
+  var source = this.get('source'),
+      timeline = this.get('timeline'),
       layers = KT.Layers.getChildren(source, timeline),
       i = 0,
       len = layers.length,
       child;
-  // if(this.)
+
   for(; i < len; i++) {
     
     child = KT.Components.create({
       source: layers[i],
       timeline: timeline
     });
-    child.parent = this;
+    child.set('parent', this);
     this.addChild(child);
     child.addChildren();
     i += child.getChildrenLength()
@@ -34,14 +34,11 @@ function getChildrenLength () {
       child,
       length = KT.Layers.getChildren( this.getSource(), this.getTimeline()).length
   
-      
   for(; i < len; i++) {
     child = this.components[i];
     length += child.getChildrenLength()
   }
 
-  // KT.Debug(this.getId().toUpperCase() + ' : ' + length);
-  
   return length
 }
 

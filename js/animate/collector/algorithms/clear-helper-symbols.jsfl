@@ -11,7 +11,7 @@
         child;
     for(; i >= len; i--) {
       child = this.components[i];
-      if(child.getId().match(helpers)) {
+      if(child.get('id').match(helpers)) {
         this.components.splice(i, 1)
       }
     }

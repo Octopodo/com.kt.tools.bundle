@@ -4,7 +4,7 @@
     var types = Array.prototype.slice.call(arguments);
     this.components = _.filter(this.components, function (child){
       var preserve = _.find(types, function(type){
-        return type !== child.type
+        return type !== child.get('type')
       })
       return preserve !== undefined
     })
@@ -14,7 +14,7 @@
     var names = Array.prototype.slice.call(arguments);
     this.components = _.filter(this.components, function (child){
       var preserve = _.find(names, function(name){
-        return name !== child.getId()
+        return name !== child.get('id')
       })
       return preserve !== undefined
     })

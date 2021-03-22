@@ -7,18 +7,19 @@ function unify(components) {
       i, j, jLen,
       component,
       item,
+      data,
       uniq = [];
 
   for(i in unified) {
     component = unified[i][0];
-    
+    data = component.get('data');
     for(j = 1, jLen = unified[i].length; j < jLen; j++) {
       item = unified[i][j];
-      component.data.position.push(item.data.position);
-      component.data.anchor.push(item.data.anchor);
-      component.data.rotation.push(item.data.rotation);
-      component.data.size.push(item.data.size);
-      component.data.path = item.data.path
+      data.position.push(item.data.position);
+      data.anchor.push(item.data.anchor);
+      data.rotation.push(item.data.rotation);
+      data.size.push(item.data.size);
+      data.path = item.data.path
     }
 
     uniq.push(component)
@@ -29,7 +30,7 @@ function unify(components) {
 function SimplifyLayer(opts) {
   if(this.components.length === 0) return
   var opts = opts || {},
-      source = this.getSource(),
+      source = this.get('source'),
       keys = KT.Frames({source: source, keys: true}),
       clean = typeof opts.clean === 'boolean' ? opts.clean : true, 
       child,
@@ -42,8 +43,8 @@ function SimplifyLayer(opts) {
   for(;i < len; i++) {
     if(types.symbols === false && types.elements === false){
       child = this.components[i];
-      types.symbols = types.symbols === true ? true : child.type === 'Symbol';
-      types.elements = types.elements === true ? true : child.type !== 'Symbol';
+      types.symbols = types.symbols === true ? true : child.get('type') === 'Symbol';
+      types.elements = types.elements === true ? true : child.get('type') !== 'Symbol';
     }
   }
 
@@ -62,29 +63,36 @@ function SimplifyLayer(opts) {
 
 
 function SimplifySymbol(opts) {
-
   var opts = opts || {},
       clean = typeof opts.clean === 'boolean' ? opts.clean : true,
       cleanSymbols = typeof opts.cleanSymbols === 'boolean' ? opts.cleanSymbols : true,
       i = 0,
       len = this.components.length,
-      timeline = this.getSource().timeline || this.timeline,
+      timeline = this.get('source').timeline || this.timeline,
       isSequence,
       child,
       layer,
+      childData,
+      childSource,
+      childType,
       hasSymbols =  false,
       hasDataLayers = false,
       hasSequences = false,
-      isEmpty;
+      isEmpty,
+      isDataLayer;
 
   for( i = len - 1; i >= 0; i--){
     isEmpty = false;
     child = this.components[i];
-    isSequence = child.data.timing && child.data.timing.frames.length > 1;
-    hasDataLayers = hasDataLayers || child.isDataLayer;
+    childData = child.get('data');
+    childSource = child.get('source');
+    childType = child.get('type');
+    isDataLayer = child.get('isDataLayer');
+    isSequence = childData.timing && childData.timing.frames.length > 1;
+    hasDataLayers = hasDataLayers || child.get('isDataLayer');
     hasSequences = hasSequences || isSequence
     isEmpty = KT.Layers.isEmpty({
-      layer: child.getSource(),
+      layer: childSource,
       timeline: timeline
     })
     
@@ -95,19 +103,19 @@ function SimplifySymbol(opts) {
     if((clean === true && hasSymbols === false) ) {
       hasSymbols = child.hasSymbols();
     }
-    if( child.type === 'Layer' && child.components.length === 1 && !child.isDataLayer) {
+    if( childType === 'Layer' && child.components.length === 1 && !isDataLayer) {
       
-      if( KT.Frames({source: child.getSource(), keys: true}).length > 1 ) {
-        child.components[0].data = child.data;
+      if( KT.Frames({source: childSource, keys: true}).length > 1 ) {
+        child.components[0].set('data', childData);
       }
       this.components.splice(i, 1, child.components[0]);
       continue;
     }
 
-    if(child.type === 'Group' && child.getSource()){
+    if(childType === 'Group' && childSource){
       
       hasSymbols = true;
-      layer = child.getSource();
+      layer = childSource;
       isEmpty = child.components.length < 1;
       if(isEmpty === true && layer.layerType === 'folder'){
         this.components.splice(i, 1);
@@ -119,11 +127,8 @@ function SimplifySymbol(opts) {
 
   if(this.type !== 'Group' && clean  && !hasSymbols  && !hasSequences && cleanSymbols) {  //
     this.removeChildren();
-    
     return
   }
-
-  
 }
 
 

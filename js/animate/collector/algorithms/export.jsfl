@@ -2,45 +2,43 @@
 
 var paths = {};
 function ExportSymbol(path) {
-  if(this.type !== 'Group' && this.components.length > 0  || this.getId().match(/export all/gi)) return
-  var source = this.getSource(),
-      path = path + '/' + this.getId();
+  if(this.get('type') !== 'Group' && this.components.length > 0  || this.get('id').match(/export all/gi)) return
+  var source = this.get('source'),
+      id = this.get('id'),
+      data = this.get('data'),
+      path = path + '/' + id;
       
-  this.data.path = FLfile.uriToPlatformPath(path).replace(/\\/g, '/') ; 
+  data.path = FLfile.uriToPlatformPath(path).replace(/\\/g, '/') ; 
   
   if(source instanceof SymbolItem) {
-    if(!paths[this.getId()]) {
+    if(!paths[id]) {
       path = KT.IO.createFolder(path);
-      source.exportToPNGSequence(path + '/' + this.getId());
-      paths[this.getId()] = true;
-      
+      source.exportToPNGSequence(path + '/' + id);
+      paths[id] = true;
     }
   }
-  
 }
 
 
 function ExportLayer(path) {
   var newSource = KT.Document.createSymbolFromLayers({
-        layers: this.getSource(),
-        timeline: this.getTimeline(),
-        name: this.getId(),
+        layers: this.get('source'),
+        timeline: this.get('timeline'),
+        name: this.get('id'),
         path: 'KT_Backup'
       }),
       newLayer = newSource.timeline.layers[0],
-      toSequence = KT.Frames({source: newLayer}).keys().length > 1,
-      visible = newLayer.visible;
+      toSequence = KT.Frames({source: newLayer}).keys().length > 1;
+
   if(!toSequence) {
 
     newSource.timeline.removeFrames(1, newLayer.frames.length + 1)
   }
   newLayer.visible = true;
-  this.setSource(newSource)
+  this.set('source', newSource)
   
   ExportSymbol.call(this, path)
-
-  // this.setSource(this.setInstance())
-  KT.Library.delete(newSource);
+  // KT.Library.delete(newSource);
 }
 
 
@@ -51,9 +49,9 @@ function ExportGroup(path) {
       newLayer,
       toSequence,
       newSource = KT.Document.createSymbolFromLayers({
-        layers: this.getSource(),
-        timeline: this.getTimeline(),
-        name: this.getId(),
+        layers: this.get('source'),
+        timeline: this.get('timeline'),
+        name: this.get('id'),
         path: 'KT_Backup',
       });
   
@@ -67,19 +65,15 @@ function ExportGroup(path) {
     }
   });
 
+  this.set('source', newSource);
   newLayer = newSource.timeline.layers[0];
   toSequence = KT.Frames({source: newLayer}).keys().length > 1;
 
   if(!toSequence) {
     newSource.timeline.removeFrames(1, newLayer.frames.length + 1)
   }
-  
-  
-  // if(this.getId() === 'Character') {KT.Debug('Exporting fukn folder')}
-  this.setSource(newSource);
-  
-  if(this.getSource().layerType !== 'folder' && this.isDataLayer === false) {
-  
+
+  if(this.get('source').layerType !== 'folder' && this.get('isDataLayer') === false) {
     ExportSymbol.call(this, path);
   }
 }

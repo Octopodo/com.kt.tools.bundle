@@ -1,21 +1,20 @@
 (function() {
-  var superClass = KT.Components.Symbol;
+  var superClass = KT.Components.AN.Symbol;
   function addChildren() {
-    var source = this.getTimeline(),
-        layers = source.layers,
+    var timeline = this.get('timeline'),
+        layers = timeline.layers,
         i = 0,
         len = layers.length,
         child;
     for(; i < len; i++) {
       child = KT.Components.create({
         source: layers[i],
-        timeline: source
+        timeline: timeline
       });
-      child.parent = this;
+      child.set('parent', this);
       this.addChild(child);
       child.addChildren();
       i += child.getChildrenLength();
-      // KT.Debug(child.getId() + ': ' + child.getChildrenLength())
     }
   }
 
@@ -23,7 +22,7 @@
   ////////////////////////////////
   function TimelineComponent(params) {
     
-    var params = params;
+    var params = params || {};
     params.type = 'Timeline';
     params.timeline = params.source,
     params.source = KT.Document.createSymbolFromLayers({
@@ -43,5 +42,5 @@
     addChildren.call(this);
   };
 
-  KT.Components.Timeline = TimelineComponent;
+  KT.Components.AN.Timeline = TimelineComponent;
 })();

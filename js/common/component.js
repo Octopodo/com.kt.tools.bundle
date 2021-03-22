@@ -82,7 +82,13 @@ var Component = function(params) {
 
   this.components = [];
 
-  this.get = function(prop) { return props[prop]}
+  this.get = function(prop) { 
+    if(arguments.length === 0) {
+      return props
+    } else {
+      return props[prop];
+    }
+  }
   this.set = function(prop, value) { props[prop] = value }
   this.delete = function(prop) {
     if(props[prop]) {

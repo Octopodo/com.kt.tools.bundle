@@ -8,32 +8,37 @@
 
 
 function UnmaskChildren() {
-  var source = this.getSource(),
-      timeline = this.getTimeline();
-  this.tempData = this.tempData || {};
-  this.tempData.isVisible = this.type === 'Layer' || this.type === 'Group' ? source.visible : null;
+  var source = this.get('source'),
+      timeline = this.get('timeline'),
+      type = this.get('type'),
+      tempData;
+  this.set('tempData', this.tempData || {});
+  tempData = this.get('tempData')
+  tempData.isVisible = type === 'Layer' || type === 'Group' ? source.visible : null;
   source.visible = true;
 
-  if(!this.isMask && !this.isGuide) return;
+  if(!this.get('isMask') && !this.get('isGuide')) return;
   
-  this.tempData.childLayers = KT.Layers.getChildren(source, timeline)
+  tempData.childLayers = KT.Layers.getChildren(source, timeline)
   source.layerType = 'normal'
   
 }
 
 function RemaskChildren() {
-  var source = this.getSource();
-  if(_.isBoolean(this.tempData.isVisible)){
-    source.visible = this.tempData.isVisible;
-
+  var source = this.get('source'),
+      tempData = this.get('tempData'),
+      isMask = this.get('isMask'),
+      isGuide = this.get('isGuide');
+  if(!tempData) return;
+  if(_.isBoolean(tempData.isVisible)){
+    source.visible = tempData.isVisible;
   }
-  if((!this.isMask && !this.isGuide)|| !this.tempData) return
+  if( !isMask && !isGuide )  return
   
   source.layerType = 'mask';
-  _.each(this.tempData.childLayers, function(layer){
+  _.each(tempData.childLayers, function(layer){
     layer.parentLayer = source;
   })
-
 }
 
 var Unmask = function(){}

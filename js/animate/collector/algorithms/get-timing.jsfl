@@ -2,7 +2,8 @@
 
 function LayerTiming(source){
 
-  var source = source || this.getSource(),
+  var source = source || this.get('source'),
+      data = this.get('data'),
       frames = [],
       labels = [],
       actions = [];
@@ -16,12 +17,12 @@ function LayerTiming(source){
     }
   }),
 
-  this.data.timing = {frames: frames, labels: labels, actions: actions};
-  this.data.duration = source.frames.length;
+  data.timing = {frames: frames, labels: labels, actions: actions};
+  data.duration = source.frames.length;
 }
 
 function SymbolTiming() {
-  var source = this.getInstance().layer;
+  var source = this.get('instance').layer;
   LayerTiming.call(this, source)
 }
 
