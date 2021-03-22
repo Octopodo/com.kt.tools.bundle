@@ -12,11 +12,26 @@ function isDocument(document) {
   return document && document.typename === 'Document'
 }
 
+function isEmptyLayer(layer){
+  var bounds = layer.bounds,
+      isEmpty = true,
+      i = 0,
+      len = bounds.length;
+
+  for(; i < len; i++) {
+    if(bounds[i] > 0) {
+      isEmpty = false;
+      break
+    } 
+  }
+  return isEmpty
+}
 
 _.mixin({
   isDocument: isDocument,
   isLayer: isLayer,
   isFolder: isFolder,
+  isEmptyLayer: isEmptyLayer
 });
 
 })();

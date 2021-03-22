@@ -39,12 +39,14 @@ function importSequence(){
         labels = data.timing.labels,
         tLen = timing.length, 
         fLen = files.length,
+        frameCount = 0;
         lastFile,
+        numFiles,
         t = 0,
         image,
         file,
         frame,
-        frames,
+        frames,,
         frameSet,
         isFrameSet,
         time,
@@ -60,7 +62,7 @@ function importSequence(){
   source = this.get('source')
   ancestor = findAncestor.call(this);
   ancestor && KT.Layers.setParent(ancestor.get('source'), source)
-  // if(this.id === 'Happy') $.bp()
+  if(this.get('id') === 'M') $.bp()
   for(; t < tLen; t++) {
     time = timing[t];
     label = labels[t];
@@ -71,7 +73,7 @@ function importSequence(){
     folder = isFrameSet ? document.layerSets.add() : source;
     folder.name = isFrameSet ? label : folder.name;
     isFrameSet && KT.Layers.setParent(source, folder);
-    
+    frameCount = 0;
     for(; time < lastFile; time++) {
       file = files[time] || files[0] ;
       frame = KT.Document.import(file);
@@ -93,7 +95,6 @@ importAssets.default = function(){
       data = this.get('data'),
       self = this,
       parentSource;
-
   if(!data.path) {
     var parent;
     if(this.get('isDataLayer') === true) return;

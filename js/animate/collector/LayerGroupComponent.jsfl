@@ -56,10 +56,10 @@ var LayerGroupComponent = function(params) {
   superClass.call(this, params);
 
 
-  this.isDataLayer = KT.Layers({
+  this.set('isDataLayer', KT.Layers({
     layers: this.get('source'),
     timeline: this.get('timeline')
-  }).getDataLayers().length > 0;
+  }).getDataLayers().length > 0);
 
   this.set('isMask', layer.layerType === 'mask');
   this.set('isGuide', layer.layerType === 'guide');

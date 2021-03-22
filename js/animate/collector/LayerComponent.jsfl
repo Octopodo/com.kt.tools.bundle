@@ -50,7 +50,9 @@
       timeline: this.get('timeline')
     }).getDataLayers().length > 0);
     this.set('isVisible', this.get('source').visible);
+    
   };
+  
   KT.Extend(LayerComponent, superClass);
 
 

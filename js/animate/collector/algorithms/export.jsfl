@@ -3,20 +3,23 @@
 var paths = {};
 function ExportSymbol(path) {
 
-  if(this.get('type') !== 'Group' && this.components.length > 0  || this.get('id').match(/export all/gi)) return
+  if(this.get('type') !== 'Group' && this.components.length > 0  
+      || this.get('id').match(/export all/gi)
+      || this.get('isFolder')) {
+        return
+      };
+  // KT.Debug(this.get('id') + ': ' + this.get('source').name)
   var source = this.get('source'),
       id = this.get('id'),
       data = this.get('data'),
       path = path + '/' + this.getPath();
-      
+      path = this.get('type') === 'Group' ? path + '/' + id : path;
   data.path = FLfile.uriToPlatformPath(path).replace(/\\/g, '/') ; 
   
   if(source instanceof SymbolItem) {
-    if(!paths[id]) {
-      path = KT.IO.createFolder(path);
-      source.exportToPNGSequence(path + '/' + id);
-      paths[id] = true;
-    }
+    path = KT.IO.createFolder(path);
+    source.exportToPNGSequence(path + '/' + id);
+    paths[id] = true;
   }
 }
 
@@ -37,6 +40,7 @@ function ExportLayer(path) {
   }
   newLayer.visible = true;
   this.set('source', newSource)
+  // KT.Debug(this.get('source').name)
   
   ExportSymbol.call(this, path)
   // KT.Library.delete(newSource);
@@ -75,7 +79,7 @@ function ExportGroup(path) {
   }
 
   if(this.get('source').layerType !== 'folder' && this.get('isDataLayer') === false) {
-    ExportSymbol.call(this, path);
+    ExportSymbol.call(this, path );
   }
 }
 

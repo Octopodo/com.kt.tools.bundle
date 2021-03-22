@@ -15,7 +15,8 @@
 
 function createSymbolFromLayers(opts) {
   //Settup
-  var timeline = KT.Document.getTimeline(opts.timeline),
+
+  var timeline = opts.timeline, //KT.Document.getTimeline(opts.timeline),
       name = opts.name || 'Symbol_from_layers',
       path = opts.path ,
       type = opts.type || 'graphic',
@@ -43,8 +44,7 @@ function createSymbolFromLayers(opts) {
       index = layers[0].index,
       replacedLayer,
       element;
-
-  // KT.Debug(layers[0].name + ' ' + index)
+    
   //Perform
   layers[copyAction]();
   layers.paste(newSymbol);
@@ -71,6 +71,7 @@ function createSymbolFromLayers(opts) {
   if(replacedLayer.frames.length < maxFrames--) {
     timeline.insertFrames(maxFrames);
   }
+
   return replacedLayer
   
 }

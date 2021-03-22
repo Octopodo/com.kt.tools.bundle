@@ -159,6 +159,7 @@ function closeFolderAction(folder) {
 }
 
 function translateLayerAction(layer, position) {
+  if(_.isEmptyLayer(layer)) return;
   var x = _.isNumber(position.x) ? position.x : 0,
       y = _.isNumber(position.y) ? position.y : 0;
     KT.Document().activeLayer = layer;
@@ -186,6 +187,7 @@ function translateLayerAction(layer, position) {
 }
 
 function rotateLayerAction(layer, angle, pivot) {
+  if(_.isEmptyLayer(layer)) return;
   if(angle === 0) return;
   var angle = angle,
       pivot = pivot || {x: 0, y: 0},
@@ -221,6 +223,7 @@ function rotateLayerAction(layer, angle, pivot) {
 }
 
 function resizeLayerAction(layer, size) {
+  if(_.isEmptyLayer(layer)) return;
   var width = _.isNumber(size.width) ? size.width : 0,
       height = _.isNumber(size.height) ? size.height : 0;
 

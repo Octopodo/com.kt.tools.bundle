@@ -107,9 +107,10 @@ function SimplifySymbol(opts) {
     }
     if( childType === 'Layer' && child.components.length === 1 && !isDataLayer) {
       
-      // if( KT.Frames({source: childSource, keys: true}).length > 1 ) {
-      //   child.components[0].set('data', childData);
-      // }
+      if( KT.Frames({source: childSource, keys: true}).length > 1 ) {
+        child.components[0].set('data', childData);
+      }
+
       this.components.splice(i, 1, child.components[0]);
       continue;
     }

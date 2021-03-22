@@ -42,7 +42,6 @@ function addItemToTimeline(opts) {
  */
 function create(opts) {
   KT.Verbose(arguments);
-
   var library = KT.Library(),
       path = opts.path || '',
       pathExists = library.itemExists(path),
@@ -59,10 +58,10 @@ function create(opts) {
     folderCreated = library.addNewItem('folder', path)
   }
       
-
   type = type.match(validTypes)?  type :  'movie clip';
   created = library.addNewItem(type, newItemPath);
   newItem = KT.Library.get(newItemPath);
+
   
   KT.Verbose('New symbol', created, newItem.name, 'Type', newItem)
   return newItem
@@ -154,7 +153,7 @@ function duplicate(name, path) {
 
 /**Gets a first symbol that matches the name from the library
  * @function get
- * @memberof KT.Document
+ * @memberof KT.Library
  * @param {String|String[]|RexExp} name The names or names to match
  * @returns The first matching Symbol
 */
@@ -163,7 +162,7 @@ function getSymbol(name, caseInsensitive) {
 
   var library = KT.Library(),
       flags = caseInsensitive === true ? 'gi' : 'g',
-      name = KT.RegExp(name, false, flags),
+      name = KT.RegExp(name, true, flags),
       items = library.items,
       selected,
       item;

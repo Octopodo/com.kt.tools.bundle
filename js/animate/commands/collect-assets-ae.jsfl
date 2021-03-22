@@ -24,8 +24,7 @@ function collectAndExport (exportAssets) {
   component.algorithm('Parent Components', true)
   component.isRoot = true;
 
-  // KT.Debug(component)
-  // return
+
   if(_.isBoolean(exportAssets) && exportAssets === false) return;
   path = KT.IO.createFolder(path + '/' + component.get('id'));
   if(!path) {
@@ -45,7 +44,8 @@ function collectAndExport (exportAssets) {
     KT.Debug('Folder was not created');
     return
   }
-  
+
+
   
   component.algorithm('Export', null, path);
   component.algorithm('Clear Circular Data');
