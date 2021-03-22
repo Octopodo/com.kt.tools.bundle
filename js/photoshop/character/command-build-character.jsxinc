@@ -1,12 +1,12 @@
 (function(){
 var movileParts = [
-  'mouth',
-  'hair',
-  'pupil',
-  'eyebrow',
-  'eye',
-  'pupil',
-  'arm'
+  'Mouth',
+  'Hair',
+  'Pupil',
+  'Eyebrow',
+  'Eye',
+  'Pupil',
+  'Arm'
 ];
 var hideParts = [
   'Blink',

@@ -39,17 +39,17 @@ function importSequence(){
         labels = data.timing.labels,
         tLen = timing.length, 
         fLen = files.length,
-        frameCount = 0;
+        frameCount = 1,
         lastFile,
         numFiles,
         t = 0,
-        image,
         file,
         frame,
-        frames,,
+        frames,
         frameSet,
         isFrameSet,
         time,
+        label,
         name, 
         ancestor = this,
         self = this;
@@ -62,7 +62,6 @@ function importSequence(){
   source = this.get('source')
   ancestor = findAncestor.call(this);
   ancestor && KT.Layers.setParent(ancestor.get('source'), source)
-  if(this.get('id') === 'M') $.bp()
   for(; t < tLen; t++) {
     time = timing[t];
     label = labels[t];
@@ -70,18 +69,18 @@ function importSequence(){
     isFrameSet = numFiles > 1;
     lastFile = isFrameSet ? time + numFiles : time + 1;
     frameSet = [];
-    folder = isFrameSet ? document.layerSets.add() : source;
+    folder = source; //Pensar como hacer esto para las etiquetas. isFrameSet ? document.layerSets.add() : source;
     folder.name = isFrameSet ? label : folder.name;
     isFrameSet && KT.Layers.setParent(source, folder);
-    frameCount = 0;
     for(; time < lastFile; time++) {
       file = files[time] || files[0] ;
       frame = KT.Document.import(file);
-      frame.name = isFrameSet ? time : label;
+      frame.name = label || file.name.replace('.png', '');
       KT.Layers.setParent(folder, frame);
       frameSet.push(frame);
+      frameCount++
     }
-
+    
     frames.push(frameSet);
   }
 }

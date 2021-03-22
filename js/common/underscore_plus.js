@@ -51,6 +51,19 @@
     return source
   }
   
+  function formatNumber(number, radix) {
+    if(!_.isNumber(number)) { return number}
+    var radix = radix || 2,
+        number = number.toString(),
+        i = 0;
+    if(number.length < radix) {
+      for(;i < radix; i++) {
+        number = '0' + number
+      }
+    }
+    return number
+  }
+
   _.mixin({
     isInt: isInt,
     isInRange: isInRange,
@@ -58,7 +71,8 @@
     ternary: ternary,
     toCallback: toCallback,
     toCondition: toCondition,
-    toRegExp: toRegExp
+    toRegExp: toRegExp,
+    formatNumber: formatNumber
   });
   
   })();
