@@ -150,8 +150,8 @@ import evalScript from  "@/libs/eval-script-handler.js"
         ]
       }
     },
-    mounted() {
-      console.log(__dirname)
+    async mounted() {
+
     },
     methods: {
       async collectAssets(){
@@ -159,7 +159,9 @@ import evalScript from  "@/libs/eval-script-handler.js"
         await evalScript(command);
       },
 
-      reloadScript(){
+      async reloadScript(){
+        let path = evalScript.getAnimatePath();
+        await evalScript(`KT.System.setRootPath('${path}')`);
         let command = 'KT.System.reload()';
         evalScript(command)
       },

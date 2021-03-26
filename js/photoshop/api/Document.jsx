@@ -58,8 +58,8 @@ function importImageJs (path, document) {
   } catch (err) {}
 }
 function importImageAction(path) {
-  var file = new File(path);
-  if(!file) return
+  var file = File(path);
+  if(!file || file instanceof Folder) return
   var idPlc = charIDToTypeID( "Plc " );
   var desc24 = new ActionDescriptor();
   var idIdnt = charIDToTypeID( "Idnt" );

@@ -7,5 +7,6 @@
 #include "command-build-character.jsxinc"
 #include "algorithm-import-assets.jsxinc"
 #include "algorithm-place-assets.jsxinc"
+#include "algorithm-compute-spatial-data.jsxinc"
 
 #include "PS-ComponentFactory.jsxinc"

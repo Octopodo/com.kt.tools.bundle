@@ -12,11 +12,15 @@ KT.System = {};
 KT.Commands = {};
 KT.firstInit = true
 
+KT.System.setRootPath = function(path) {
+  KT.System.rootPath =  FLfile.platformPathToURI(path)
+  return path
+}
 KT.System.initialize = function() {
-  var root = 'file:///c|/Program Files/Common Files/Adobe/CEP/Extensions/com.kt.tools.bundle/js/'
+  var root = KT.System.rootPath; //'file:///c|/Program Files/Common Files/Adobe/CEP/Extensions/com.kt.tools.bundle/js/'
   KT.firsInit == false
 
-  KT.System.rootPath = function(){return root};
+  // KT.System.rootPath = function(){return root};
 
   KT.Include = function (paths) {
     
@@ -38,8 +42,7 @@ KT.System.initialize = function() {
         if(exists && !isFolder && !loaded){
           try{
             an.runScript(file[type]);
-            loaded = true
-          //  an.trace(type.toUpperCase() + ' loaded: ' + file[type])
+            break;
           } catch (e) {
             an.trace('Cant Include: ' + path);
             an.trace(e.message)
@@ -51,12 +54,7 @@ KT.System.initialize = function() {
 
   KT.Include.module = function(module) {
     var folder = root +  module + '/',
-        files =  FLfile.listFolder(folder),
-        len = files.length,
-        file,
-        loaded,
-        index,
-        i;
+        files =  FLfile.listFolder(folder);
     
     files = _.filter(files, function(file) {
       return FLfile.listFolder(module + '/' +file).length === 0
@@ -70,17 +68,18 @@ KT.System.initialize = function() {
     'common/underscore_plus',
     'common/json2',
     'common/regexp',
-    'animate/core/debugger',
+    'animate/core/debuger',
     'animate/core/IO',
     'animate/core/underscore_plus'
   ]);
 
 }
-KT.firstInit && KT.System.initialize();
+
 
 KT.System.reload = function(){
-//  KT.Debug('Reloading');
-  KT.Debugger.clearLog();
+  KT.firstInit && KT.System.initialize();
+
+  KT.Debuger.clearLog();
   KT.Include([
     'common/component',
     'common/algorithm',
@@ -95,8 +94,11 @@ KT.System.reload = function(){
   ]);
   KT.Include.module('animate/interfaces');
   KT.Include('animate/flash-main');
+
 };
+
+
+
  
- 
- 
+
  

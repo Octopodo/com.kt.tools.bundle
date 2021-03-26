@@ -8,13 +8,10 @@ KT.Execute = function() {
 }
 
 KT.Test = function() {
-  
+
   KT.Commands.BuildCharacter();
-  KT.Commands.BuildCharacter.conformCharacter()
-  // var layer= KT.Layers('Grupo 1')[0];
-  // KT.Layers.setPosition({x: 0, y: 0}, null, layer)
+
 
 }
-
 
 KT.Execute()

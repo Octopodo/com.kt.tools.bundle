@@ -58,6 +58,7 @@ function BuildCharacter(sceneName) {
   })
 
   character.algorithm('PS: Import Assets', true);
+  character.algorithm('Compute Spatial Data', true);
   character.algorithm('PS: Place Assets');
   character.traverse(function(child){
     if(_.isBoolean(child.get('isVisible'))) {

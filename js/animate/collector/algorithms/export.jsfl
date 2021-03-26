@@ -40,10 +40,8 @@ function ExportLayer(path) {
   }
   newLayer.visible = true;
   this.set('source', newSource)
-  // KT.Debug(this.get('source').name)
   
   ExportSymbol.call(this, path)
-  // KT.Library.delete(newSource);
 }
 
 

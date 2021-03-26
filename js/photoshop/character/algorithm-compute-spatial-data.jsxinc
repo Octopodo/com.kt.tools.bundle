@@ -1,0 +1,69 @@
+(function() {
+
+
+function computeSpatialData() {
+  var id = this.get('id');
+
+  var data = this.get('data'),
+      parent = this.get('parent'),
+      parentData = !parent ? {} : parent.get('data'),
+      parentAverage = parentData.average || {},
+      position, anchor, angle, size, scale,
+      parentPosition = parentData.position ? parentData.position[0] : {x: 0, y: 0},
+      parentAngle = parentData.rotation ? parentData.rotation[0] : 0,
+      parentScale = parentData.scale ? parentData.scale[0] : {x: 100, y: 100},
+      i = 0,
+      len = data.timing ? data.timing.frames.length: 1,
+      origin,
+      originData,
+      averagePosition = {x: 0, y: 0};
+
+
+  data.average = {};
+  data.average.rotation = 0;
+  data.average.position = {x: 0, y: 0};
+  data.average.scale = {x: 0, y:0};
+  
+
+  // if(!parentPosition) return;
+
+  for(; i < len; i++) {
+    position = data.position[i] ;
+    anchor = data.anchor[i];
+    angle = data.rotation[i];
+    size = data.size[i];
+    scale = {x: data.scale[i].x * 100, y: data.scale[i].y * 100};
+
+
+    data.average.position.x += position.x;
+    data.average.position.y += position.y;
+    
+
+    origin = {x: size.width/2 - anchor.x, y: size.height/2 - anchor.y}
+    position.x = position.x +  origin.x + parentPosition.x;
+    position.y = position.x +  origin.y + parentPosition.y;
+    
+    data.rotation[i] = parentAngle + angle;
+    data.average.scale.x = scale.x + parentScale.x;
+    data.average.scale.y = scale.y + parentScale.y;
+    data.average.rotation += angle; 
+
+    // data.position.splice(i, 1, position);
+    // data.scale.splice(i, 1, scale);
+    // data.rotation.splice(i, 1, rotation);
+  }
+
+
+  data.average.scale.x = data.average.position.x / len;
+  data.average.scale.y = data.average.position.y / len;
+  data.average.scale.x = data.average.scale.x / len;
+  data.average.scale.y = data.average.scale.y / len;
+
+  $.writeln(this.get('id') + ': { x: ' + data.average.position.x + ', y: ' + data.average.position.y + '}')
+  
+}
+
+function ComputeSpatialData () {}
+ComputeSpatialData.default = computeSpatialData;
+KT.Algorithm.register('Compute Spatial Data', ComputeSpatialData)
+})();

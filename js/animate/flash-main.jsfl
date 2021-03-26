@@ -15,12 +15,12 @@ KT.execute = function(){
   var endTime = _.now();
   KT.Debug('Execution finished: '+ (endTime - startTime) / 1000 + 's')
   return
-
+  
 }
 
 KT.Test = function () {
   KT.Commands.collectAndExportAE();
-
+  // KT.Debug('HELLLOOOOOO')
 
 };
 

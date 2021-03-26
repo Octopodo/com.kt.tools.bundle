@@ -1,6 +1,6 @@
 (function(){
 
-var rootPath = KT.System.rootPath();
+var rootPath = KT.System.rootPath;
 var tagsPath = 'animate/UserTags.json';
 var tags = KT.System.IO.readJSON(rootPath + tagsPath);
 

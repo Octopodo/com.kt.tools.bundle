@@ -254,6 +254,7 @@ function resizeLayerAction(layer, size) {
 }
 
 function moveLayerInside(parent, layer) {
+  if(!layer || !parent || !_.isFolder(parent)|| parent === layer) return;
   var parentIndex = parent.itemIndex - 1,
       layerID = layer.id;
   var idmove = charIDToTypeID( "move" );

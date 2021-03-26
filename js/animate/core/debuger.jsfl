@@ -127,7 +127,7 @@ function log(){
 /**Inspect the pased object ad retrieve the type, the value,
  * the constructor, the lenght and its members(depending on verbose level)
  * @function inspect
- * @memberof KT.Debugger
+ * @memberof KT.Debuger
  * @param {Any} obj - The object to inspect
  * @returns {Object} An object whit the inspected properties
  */
@@ -190,7 +190,7 @@ function setDebugMode(value) {
 
 /**Sets the verbose level
  * @function setVerboseLevel
- * @memberof KT.Debugger
+ * @memberof KT.Debuger
  * @param {Int} - The new level
  */
 function setVerboseLevel(level) {
@@ -224,17 +224,17 @@ function verbLevel(level) {
   return pass
 }
 
-KT.Debugger = function() {};
+KT.Debuger = function() {};
 
-KT.Debugger.clearLog = clearLog;
-KT.Debugger.debug = debug;
-KT.Debugger.inspect = inspect;
-KT.Debugger.isObject = isObject;
-KT.Debugger.log = log;
-KT.Debugger.setDebugMode = setDebugMode;
-KT.Debugger.setVerboseLevel = setVerboseLevel;
-KT.Debugger.setVerboseMode = setVerboseMode;
-KT.Debugger.verbose = verbose;
+KT.Debuger.clearLog = clearLog;
+KT.Debuger.debug = debug;
+KT.Debuger.inspect = inspect;
+KT.Debuger.isObject = isObject;
+KT.Debuger.log = log;
+KT.Debuger.setDebugMode = setDebugMode;
+KT.Debuger.setVerboseLevel = setVerboseLevel;
+KT.Debuger.setVerboseMode = setVerboseMode;
+KT.Debuger.verbose = verbose;
 
 
 KT.Debug = debug;

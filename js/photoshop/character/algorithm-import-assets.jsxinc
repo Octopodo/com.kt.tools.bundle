@@ -24,6 +24,7 @@ function importImage(){
 
   this.set('source', KT.Document.import(files[0]));
   source = this.get('source');
+  if(!source) return
   source.name = this.get('id');
   ancestor = findAncestor.call(this);
   ancestor && KT.Layers.setParent(ancestor.get('source'), source)
@@ -93,6 +94,7 @@ importAssets.default = function(){
       parent = this.get('parent'),
       data = this.get('data'),
       self = this,
+      id = this.get('id'),
       parentSource;
   if(!data.path) {
     var parent;
