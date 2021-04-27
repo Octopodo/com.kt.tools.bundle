@@ -10,6 +10,8 @@ KT.Execute = function() {
 KT.Test = function() {
 
   KT.Commands.BuildCharacter();
+  // var layer = KT.Layers('Torso BG')[0]
+  // KT.Layers.rasterize(layer)
 
 
 }

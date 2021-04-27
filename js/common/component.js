@@ -1,6 +1,7 @@
 (function(){
 
 function algorithm(){
+  // KT.Debug(arguments[0])
   var algorithmID = arguments[0],
       alg = KT.Algorithm(algorithmID),
       fromRoot = _.isBoolean(arguments[1]) ? arguments[1] : false,
@@ -86,6 +87,7 @@ function getPath() {
 }
 
 var Component = function(params) {
+  this.id = params.id
   var props = {
         id: params.id,
         source: params.source,

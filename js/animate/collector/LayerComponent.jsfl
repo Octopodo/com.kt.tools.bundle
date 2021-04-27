@@ -35,6 +35,7 @@
       child.timeline = timeline;
       child.index = i;
       child = KT.Components.AN.create(child);
+      if(!child) { return }
       child.set('parent', this);
       this.addChild(child);
       deep && child.addChildren();

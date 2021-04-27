@@ -282,7 +282,44 @@ function moveLayerInside(parent, layer) {
   executeAction( idmove, desc4, DialogModes.NO );
 }
 
+function rasterizeLayerAction(layer) {
+    if(!_.isLayer(layer)) return;
+    selectLayer(layer);
 
+  var idrasterizeLayer = stringIDToTypeID( "rasterizeLayer" );
+      var desc15 = new ActionDescriptor();
+      var idnull = charIDToTypeID( "null" );
+          var ref1 = new ActionReference();
+          var idLyr = charIDToTypeID( "Lyr " );
+          var idOrdn = charIDToTypeID( "Ordn" );
+          var idTrgt = charIDToTypeID( "Trgt" );
+          ref1.putEnumerated( idLyr, idOrdn, idTrgt );
+      desc15.putReference( idnull, ref1 );
+  executeAction( idrasterizeLayer, desc15, DialogModes.NO );
+  var stop = 0
+}
+
+
+function selectLayer(layer) {
+  if(!_.isLayer(layer) && !_.isFolder(layer)) return;
+  var layerID = layer.id,
+      layerName = layer.name;
+// =======================================================
+var idslct = charIDToTypeID( "slct" );
+    var desc24 = new ActionDescriptor();
+    var idnull = charIDToTypeID( "null" );
+        var ref7 = new ActionReference();
+        var idLyr = charIDToTypeID( "Lyr " );
+        ref7.putName( idLyr, layerName );
+    desc24.putReference( idnull, ref7 );
+    var idMkVs = charIDToTypeID( "MkVs" );
+    desc24.putBoolean( idMkVs, false );
+    var idLyrI = charIDToTypeID( "LyrI" );
+        var list3 = new ActionList();
+        list3.putInteger( layerID );
+    desc24.putList( idLyrI, list3 );
+executeAction( idslct, desc24, DialogModes.NO );
+}
 
 var LayerCheckers = {
   folders: _.isFolder,
@@ -316,6 +353,8 @@ KT.Layers.getDocument = getLayerDocument;
 KT.Layers.getPath = getLayerPath;
 KT.Layers.setParent = setParent;
 KT.Layers.setPosition = setPosition;
+KT.Layers.select = selectLayer;
+KT.Layers.rasterize = rasterizeLayerAction;
 KT.Layers.resize = resizeLayerAction;
 // KT.Layers.rotate = rotateLayer;
 // KT.Layers.moveLayerInside = moveLayerInside;

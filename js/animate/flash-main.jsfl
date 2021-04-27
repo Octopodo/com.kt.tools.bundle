@@ -19,8 +19,22 @@ KT.execute = function(){
 }
 
 KT.Test = function () {
-  KT.Commands.collectAndExportAE();
-  // KT.Debug('HELLLOOOOOO')
+  // KT.Debug(KT.Library.itemExists('ferreras'));
+  // KT.Commands.collectAndExportAE();
+  KT.Commands.collectSelectedLayers()
+
+  // KT.Commands.selectedLayersToSymbols(true)
+  // KT.Document.getTimeline().setSelectedLayers(0)
+  
+
+  // var tl = KT.Document.getTimeline();
+  // var layers = KT.Layers.getSelected(tl)
+
+  // KT.Debug(layers)
+
+  
+
+
 
 };
 

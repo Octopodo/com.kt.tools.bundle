@@ -21,11 +21,13 @@ function conformCharacter(document) {
       document = KT.Document(document);
   
   KT.Layers.traverse(document, function(layer){
-    var movile = layer.name.match(_movileParts);
-    var hide = layer.name.match(_hideParts);
+    var name = layer.name.replace(/^_/, '+');
+    layer.name = name.replace('_', ' ')
+    // var movile = layer.name.match(_movileParts);
+    // var hide = layer.name.match(_hideParts);
     
-    layer.name = movile !== null ? '+ ' + layer.name : layer.name;
-    layer.visible = hide !== null ? false : layer.visible
+    // layer.name = movile !== null ? '+ ' + layer.name : layer.name;
+    // layer.visible = hide !== null ? false : layer.visible
     
   })
 
@@ -58,13 +60,23 @@ function BuildCharacter(sceneName) {
   })
 
   character.algorithm('PS: Import Assets', true);
-  character.algorithm('Compute Spatial Data', true);
+  // character.algorithm('Compute Spatial Data', true);
   character.algorithm('PS: Place Assets');
   character.traverse(function(child){
+    var source = child.get('source');
+    var name = source.name.replace(/^_/, '+ ')
+    source.name = name.replace(/_/g, ' ');
     if(_.isBoolean(child.get('isVisible'))) {
       child.get('source').visible = child.get('isVisible')
     }
   }, false, character)
+
+  KT.Layers.traverse(null, function(layer) {
+    if(_.isLayer(layer) ){
+      KT.Layers.rasterize(layer)
+    }
+  })
+
 }
 
 

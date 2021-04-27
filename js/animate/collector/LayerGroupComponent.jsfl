@@ -2,7 +2,6 @@
   //Defiine the superclass
 var superClass = KT.Components.AN.Component;
 
-
 function addChildren() {
   
   var source = this.get('source'),
@@ -10,20 +9,19 @@ function addChildren() {
       layers = KT.Layers.getChildren(source, timeline),
       i = 0,
       len = layers.length,
-      child;
+      child,
+      path = this.getPath().toUpperCase();
 
   for(; i < len; i++) {
-    
     child = KT.Components.AN.create({
       source: layers[i],
       timeline: timeline
     });
-    child.set('parent', this);
+    if(!child) { return }
     this.addChild(child);
+    child.set('parent', this);
     child.addChildren();
-    i += child.getChildrenLength()
   }
-
 
 }
 
@@ -38,6 +36,8 @@ function getChildrenLength () {
     child = this.components[i];
     length += child.getChildrenLength()
   }
+
+  // KT.Debug(this.get('id') + ': ' + length)
 
   return length
 }

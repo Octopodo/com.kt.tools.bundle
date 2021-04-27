@@ -40,8 +40,9 @@ function SimplifyLayer(opts) {
       i = 0,
       len = this.components.length,
       types = {symbols: false, elements: false};
-
+  if(this.get('id') === 'Surprise') {KT.Debug('Surprise', this.components.length)}
   this.components = unify(this.components)
+  if(this.get('id') === 'Surprise') {KT.Debug('=>', this.components.length)}
   for(;i < len; i++) {
     if(types.symbols === false && types.elements === false){
       child = this.components[i];
@@ -95,7 +96,7 @@ function SimplifySymbol(opts) {
     hasSequences = hasSequences || isSequence
     isEmpty = KT.Layers.isEmpty({
       layer: childSource,
-      timeline: timeline
+      timeline: timeline,
     })
     
     if(isEmpty === true) {
@@ -110,7 +111,6 @@ function SimplifySymbol(opts) {
       if( KT.Frames({source: childSource, keys: true}).length > 1 ) {
         child.components[0].set('data', childData);
       }
-
       this.components.splice(i, 1, child.components[0]);
       continue;
     }
@@ -128,7 +128,7 @@ function SimplifySymbol(opts) {
     
   }
 
-  if(this.type !== 'Group' && clean  && !hasSymbols  && !hasSequences && cleanSymbols) {  //
+  if(this.get('type') !== 'Group' && clean  && !hasSymbols  && !hasSequences && cleanSymbols) {  //
     this.removeChildren();
     return
   }

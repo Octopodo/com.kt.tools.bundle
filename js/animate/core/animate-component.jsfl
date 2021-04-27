@@ -38,7 +38,9 @@ ANComponent.prototype.printData = function(store){
   var store = store || this.get(),
       i = 0,
       len = this.components.length;
+  store.id = this.id
   store.components = [];
+
 
   for(; i < len; i++){
     store.components.push(this.components[i].printData());

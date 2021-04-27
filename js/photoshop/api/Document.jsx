@@ -99,6 +99,12 @@ function Document() {
       document  = app.documents.getByName(document);
       return document;
     }catch (e) {
+      try{
+        document = app.activeDocument
+        return document
+      } catch (e2) {
+
+      }
       // return createDocument({name: document});
     }
   }

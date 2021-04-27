@@ -1,7 +1,7 @@
 (function(){
 
 
-function collectAndExport (exportAssets) {
+function collectAndExport (source, exportAssets) {
   var document = KT.Document();
       docName = document.name.replace('.fla', ''),
       path = document.pathURI.replace(document.name, '') + 'KT_Exports';
@@ -13,16 +13,20 @@ function collectAndExport (exportAssets) {
   }
 
   var timeline = KT.Document.getTimeline(),
-      component = KT.Components.AN.create( { source: timeline});
+      source = !source ? timeline : source
+      component = KT.Components.AN.create( { source: source, timeline: timeline});
       
   component.addChildren();
   component.algorithm('Get Timing Data');
   component.algorithm('Unmask');
   component.algorithm('Get Spatial Data');
-  component.algorithm('Remask', true)
+  component.algorithm('Remask', true)<
+  component.algorithm('Clear Circular Data');
+  
   component.algorithm('Simplify');
   component.algorithm('Parent Components', true)
-  component.isRoot = true;
+  component.set('isRoot', true);
+  
 
 
   if(_.isBoolean(exportAssets) && exportAssets === false) return;
@@ -58,10 +62,30 @@ function collectAndExport (exportAssets) {
     return
   }
 
-  // KT.Library.delete('KT_Backup')
+  KT.Library.delete('KT_Backup')
   KT.Document.editTimeline(timeline)
-  
 }
 
+
+function collectSelectedLayers() {
+  var timeline = KT.Document.getTimeline(),
+      layers = KT.Layers.getSelected(timeline),
+      newSymbol;
+
+  if(layers.length <= 0) return;
+
+  // KT.Debug(layers)
+
+  newSymbol = KT.Document.createSymbolFromLayers({
+    timeline: timeline,
+    layers: layers, 
+    replace: false,
+    name: layers[0].name,
+    path: 'KT_Backup'
+  });
+  collectAndExport(newSymbol.timeline)
+};
+
+KT.Commands.collectSelectedLayers = collectSelectedLayers;
 KT.Commands.collectAndExportAE = collectAndExport;
 })();

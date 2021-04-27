@@ -49,10 +49,12 @@ function createComponent(params) {
     }
     break;
 
-  default:
-    component = new KT.Components.AN.Asset(params)
-    break;
+  // default:
+  //   component = new KT.Components.AN.Asset(params)
+  //   break;
   }
+
+  
   return component
 }
 

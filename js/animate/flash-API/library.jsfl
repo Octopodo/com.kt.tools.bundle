@@ -76,8 +76,7 @@ function createUniqueName(name, path) {
       path = path ? path + '/' :  '',
       name = path +  name ,
       newName = name,
-      exists = exists = library.itemExists(name);
-      
+      exists = KT.Library.itemExists(name);
   if(!exists) {
     KT.Verbose('Name does not exist', name)
     return KT.Path.split(name).name
@@ -87,7 +86,7 @@ function createUniqueName(name, path) {
   index++
   while(exists) {
     newName  = name + '(' + index + ')'
-    exists = library.itemExists(newName)
+    exists = KT.Library.itemExists(newName)
     KT.Verbose('Exists:', newName, exists)
     index++
   }
@@ -150,7 +149,20 @@ function duplicate(name, path) {
 };
 
 
+function itemExists(path) {
 
+  var library = KT.Library(),
+      i = 0,
+      len = library.items.length,
+      exists = false,
+      item;
+  for(; i < len; i++) {
+    item = library.items[i];
+    exists = item.name.toLowerCase() === path.toLowerCase();
+    if(exists) break;
+  }
+  return exists
+}
 /**Gets a first symbol that matches the name from the library
  * @function get
  * @memberof KT.Library
@@ -272,6 +284,7 @@ KT.Library.delete = deleteItem;
 KT.Library.duplicate = duplicate;
 KT.Library.get = getSymbol;
 KT.Library.getSymbolSize = getSymbolSize;
+KT.Library.itemExists = itemExists;
 KT.Library.walk = walk;
 
 })();

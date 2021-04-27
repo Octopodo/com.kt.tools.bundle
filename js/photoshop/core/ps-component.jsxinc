@@ -27,6 +27,7 @@
     this.set('isFolder', data.isFolder);
     this.set('isGuide', data.isGuide);
     this.set('isVisible', data.isVisible);
+    this.set('isRoot', data.isRoot);
 
     this.components = [];
   };

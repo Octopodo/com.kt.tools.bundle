@@ -18,11 +18,12 @@ function placeImage(source, index) {
   counter++
   KT.Layers.resize(source, scale);
   bounds = KT.Layers.getBounds(source)
-  // origin = {
-  //   x: bounds.width/2 - anchor.x,
-  //   y: bounds.height/2 - anchor.y,
-  // };
   origin = {x: 0, y: 0};
+  origin = {
+    x: bounds.width/2 - anchor.x,
+    y: bounds.height/2 - anchor.y,
+  };
+  
   KT.Layers.setPosition(position , origin, source);
   KT.Layers.rotate(source, angle, origin);
 }
@@ -36,7 +37,7 @@ placeAssets.default = function(){
       source = this.get('source'),
       id = this.get('id');
 
-  if(_.isFolder(source)) return;
+  // if(_.isFolder(source)) return;
 
   if(frames && data.timing.frames.length > 1) {
     var i = 0, f,

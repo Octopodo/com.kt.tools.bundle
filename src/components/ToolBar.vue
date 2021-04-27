@@ -19,6 +19,36 @@
         </template>
         <span>Collect Character</span>
       </v-tooltip>
+       <v-tooltip bottom open-delay="900" >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            class='mt-5' 
+            dark
+            v-bind="attrs"
+            v-on="on"
+            color="green"
+            @click.prevent="layersToSymbols()"
+          >
+            Selected Layers To Symbols
+          </v-btn>
+        </template>
+        <span>Selected Layers To Symbols</span>
+      </v-tooltip>
+      <v-tooltip bottom open-delay="900" >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            class='mt-5' 
+            dark
+            v-bind="attrs"
+            v-on="on"
+            color="green"
+            @click.prevent="exportSelectedLayers()"
+          >
+            Export Layers
+          </v-btn>
+        </template>
+        <span>Export Selected Layers</span>
+      </v-tooltip>
       </v-col>
       <v-col class="col-6">
         <v-tooltip bottom open-delay="900">
@@ -139,6 +169,7 @@ import evalScript from  "@/libs/eval-script-handler.js"
       return {
         verboseMode: false,
         exportAssets: false,
+        replaceLayers: true,
         exportPath: '',
         verboseLevel: 0,
         verboseColors: [
@@ -155,8 +186,13 @@ import evalScript from  "@/libs/eval-script-handler.js"
     },
     methods: {
       async collectAssets(){
-        let command = 'KT.execute()'
+        let command = 'KT.Commands.collectAndExportAE()'
         await evalScript(command);
+      },
+
+      async layersToSymbols() {
+        let command =`KT.Commands.selectedLayersToSymbols(${this.replaceLayers})`;
+        evalScript(command)
       },
 
       async reloadScript(){
@@ -167,20 +203,24 @@ import evalScript from  "@/libs/eval-script-handler.js"
       },
 
       exportDebugLog() {
-        let command ='KT.Debugger.exportDebugLog()'
+        let command ='KT.Debuger.exportDebugLog()'
         evalScript(command)
       },
 
+      exportSelectedLayers() {
+        let command ='KT.Commands.collectSelectedLayers()'
+        evalScript(command)
+      },
       setVerboseMode() {
         this.verboseMode = !this.verboseMode
-        let command = `KT.Debugger.setVerboseMode(${this.verboseMode})`
+        let command = `KT.Debuger.setVerboseMode(${this.verboseMode})`
         evalScript(command)
       },
       setVerboseLevel() {
         this.verboseLevel = this.verboseLevel + 1 >= 4 ? 0 : this.verboseLevel + 1;
 
         // this.verboseMode = !this.verboseMode;
-        let command = `KT.Debugger.setVerboseLevel(${this.verboseLevel})`
+        let command = `KT.Debuger.setVerboseLevel(${this.verboseLevel})`
         evalScript(command)
       },
       setExportFootage() {

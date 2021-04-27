@@ -212,7 +212,6 @@ function getLayers(opts) {
       userCondition,
       match,
       get;
-  
   //If true, return a new condition function tu use the global condition
   if(useGlobalOpts === true) {
     userCondition = condition;
@@ -231,7 +230,6 @@ function getLayers(opts) {
       layers.push(layer)
     };
   }
-
   //If no valuer, return
   // if(layers.length === 0 && layerNames.length === 0) return;
 
@@ -457,6 +455,7 @@ function offsetLayers(layers, offset) {
       i = 0,
       len = layers.length,
       layer;
+  
   for(; i < len; i++) {
     layer = layers[i];
     KT.Frames({source: layer}).offsetPosition(offset)
@@ -599,17 +598,16 @@ Layers.prototype = {
         index;
     
     
-    for(i = 0, len = layers.length; i < len; i++) {
+    for(i =  layers.length - 1, len =0; i >= len; i--) {
       layer = layers[i];
       if(layer.layerType === 'folder') {
         children = KT.Layers.getChildren(layer);
         this.delete(children)
       }
-      index = layers.index;
-      deleteLayer(layers[i], this.timeline);
+      index = layer.index;
+      this.timeline.deleteLayer(index)
       this.splice(index, 1)
     }
-    
     resetIndices(this, this.timeline);
     this.print()
     return this

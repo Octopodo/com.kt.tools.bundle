@@ -126,8 +126,17 @@ function offsetFramePosition(frame, offset) {
       len = elements.length,
       element;
   
-
+  //If there are doted shapes, flash moves all elements at once.
   for(; i < len; i++) {
+    element = elements[i];
+    if(element.elementType !== 'instance' && !element.isGroup && !element.isDrawingObject){
+      len = 1;
+      break;
+    }
+  }
+
+  for(; i < 1; i++) {
+    
     element = elements[i];
     element.x += offset.x;
     element.y += offset.y;

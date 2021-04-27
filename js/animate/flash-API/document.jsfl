@@ -57,12 +57,13 @@ function createSymbolFromLayers(opts) {
   });
 
   if(!opts.replace) return newSymbol;
-
   replacedLayer = KT.Library.addItemToTimeline({
     item: newSymbol,
     timeline: timeline,
     index: index
   });
+
+  
 
   element = replacedLayer.frames[0].elements[0];
   element.x = bounds.x;
@@ -294,8 +295,6 @@ function removeScenes(filter) {
 KT.Document =  function() {
   return an.getDocumentDOM()
 }
-// an.trace('DOCUMENT')
-// an.trace(KT.Document)
 
 /** Class to make easier to do things with document and symbols. 
  * @namespace

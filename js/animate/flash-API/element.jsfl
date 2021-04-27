@@ -37,7 +37,7 @@
     
     function getAnchor(element) {
       var anchor = {x: 0, y: 0},
-          isShape = element.elementType === 'shape'|| element.elementType ==='shapObj',
+          isShape = element.elementType !== 'instance',//element.elementType === 'shape'|| element.elementType ==='shapeObj' || element.isGroup,
           xProp = isShape ? 'x' : 'transformX',
           yProp = isShape ? 'y' : 'transformY',
           rotation = element.rotation,

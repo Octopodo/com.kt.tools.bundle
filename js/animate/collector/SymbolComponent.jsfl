@@ -12,6 +12,7 @@
         source: layers[i],
         timeline: source.timeline
       });
+      if(!child) { return }
       child.set('parent', this);
       this.addChild(child);
       child.addChildren();

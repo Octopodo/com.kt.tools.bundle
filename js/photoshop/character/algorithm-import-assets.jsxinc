@@ -3,7 +3,8 @@
 function findAncestor() {
   var source = this.get('source'),
       parent = this.get('parent'),
-      ancestor = _.isFolder(source) ? parent : this;
+      ancestor = _.isFolder(source) ? parent : this,
+      data = ancestor.get();
 
   while( !ancestor.get('isRoot') && !_.isFolder(ancestor.get('source'))) {
     ancestor =  ancestor.get('parent');
