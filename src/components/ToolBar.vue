@@ -186,7 +186,7 @@ import evalScript from  "@/libs/eval-script-handler.js"
     },
     methods: {
       async collectAssets(){
-        let command = 'KT.Commands.collectAndExportAE()'
+        let command = 'KT.Commands.collectAndExportAE()';
         await evalScript(command);
       },
 

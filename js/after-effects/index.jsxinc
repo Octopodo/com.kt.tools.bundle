@@ -1,1 +1,6 @@
-var o =0
+(function(){
+
+  var layer = app.project.activeItem.selectedLayers[0];
+  ;
+  var stop = 0;
+})();
