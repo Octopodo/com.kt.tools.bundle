@@ -1,0 +1,26 @@
+(function() {
+
+
+function SwapSides(){
+  var layer = app.activeDocument.activeLayer;
+  if(!layer) return;
+
+  KT.Layers.traverse(layer, function(child) {
+    var rightExp = /right/i;
+    var leftExp = /left/i
+    var right = child.name.match(rightExp) !== null;
+    var left = child.name.match(leftExp) !== null;
+
+    if(left) {
+      child.name = child.name.replace(leftExp, 'Right')
+    }
+    if(right) {
+      child.name = child.name.replace(rightExp, 'Left')
+    }
+
+  })
+}
+
+KT.Commands.SwapSides = SwapSides;
+
+})();

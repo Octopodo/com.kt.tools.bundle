@@ -5,6 +5,7 @@
 #include "TimelineComponent.jsxinc"
 #include "GuideComponent.jsxinc"
 #include "command-build-character.jsxinc"
+#include "command-swap-sides.jsxinc"
 #include "algorithm-import-assets.jsxinc"
 #include "algorithm-place-assets.jsxinc"
 #include "algorithm-compute-spatial-data.jsxinc"
