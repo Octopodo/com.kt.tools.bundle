@@ -1,0 +1,23 @@
+(function() {
+
+function createCsvTree() {
+  var csv = KT.IO.openFileDialog();
+  if(!csv.exists) return;
+
+  var parent = csv.parent,
+      info = KT.IO.readFile(csv);
+}
+
+function createCsvMatrix(csv) {
+  var rows = csv.split(/\r|\n/g),
+      i = 0,
+      len = rows.length;
+  
+  for(; i < len; i++) {
+    
+  }
+}
+
+
+KT.IO.createCsvTree = createCsvTree;
+})();
