@@ -1,0 +1,186 @@
+(function(){
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+/**
+   * @function fileExists
+   * @memberof KT.IO
+   * @param {String} path -The path of the file
+   * @returns {Bool} True if the file exists
+   */
+  
+function fileExists(path) {
+    return new File(path).exists;
+}
+
+/**Gets the file name from a file 
+  * @function getNameFromPath
+  * @memberof KT
+  * @param {String} path
+  * @param {Boolean} extension - If true, returns the name with the extension
+  * @returns the last name of a path
+*/
+function getNameFromPath(path, extension) {
+  var split = path.split('/');
+  var name = split[split.length - 1]
+  if(extension) {
+    return name
+  }
+  split = name.split('.');
+  split.pop()
+  name = split.join('.');
+  return name
+}
+/**/
+function getFileNames(path, obj, def) {
+  var folder = new Folder(path);
+  var fileNames = (!obj) ? [] : {};
+  var value = (!def) ? false : true;
+  folder.getFiles(function(file) {
+    if (file instanceof File) {
+      fileName = stripFileExtension(stripFileExtension(file.name));
+      if (!obj) {
+        fileNames.push(fileName)
+      } else {
+        fileNames[fileName] = value
+      }
+    }
+  });
+  return fileNames
+}
+
+/** Gets the extension of a file
+  * @function getExtension
+  * @memberof KT
+  * @param {String} fileName - The name of the file
+  * @returns The extension of the file
+  */
+function getExtension(fileName) {
+  var split = fileName.split(".");
+  return split[split.length - 1]
+}
+
+
+
+/** Extract the name of the file in a path
+  * @function getFileName
+  * @memberof KT
+  * @param {String} path - The full path of the file
+  * @returns Te name of the file
+  */
+function getFileName (path) {
+  var split = path.split("/");
+  return split[split.length - 1];
+}
+
+
+/*TODO:
+    Replace the regex for a env variable
+*/
+function stripFileExtension(str) {
+  return str.replace(/\.[^\/.]+$/, "")
+}
+
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+
+function readFile(path) {
+  var file = (path instanceof File)? path : new File(path),
+      fileOk,
+      content;
+  
+  if(!file) return;
+
+  fileOk = file.open('r');
+
+  if(fileOk) {
+    content = file.read();
+    file.close();
+    return content;
+  }
+}
+
+
+function readFileDialog(prompt) {
+  var file = openFileDialog(prompt);
+
+  if(file instanceof File){
+    return readFile(file)
+  }
+}
+
+
+function writeFile(path, content) {
+  try {
+    var file = path instanceof File ? path : new File(path),
+        fileOk,
+        error;
+
+    if(!file) return;
+
+    fileOk = file.open('w');
+
+    if(fileOk) {
+      file.write(content);
+      file.close();
+      return file
+    }
+  } catch (err) {
+    error = ('KT Write File ERROR:\\n' 
+            + 'Desc =>' + e.message + '\\n'
+            + 'Line => ' + e.line + '\\n'
+            + 'File => ' + path)
+  }
+}
+
+function openFileDialog(prompt) {
+  var file = File.openDialog(prompt);
+  return file;
+}
+
+
+function openFolderDialog(prompt) {
+  var folder ,
+      path = File.saveDialog(prompt);
+
+  if(!path) {
+    return 
+  }
+
+  path = path.toString().split('/');
+  path.pop();
+  path = path.join('/');
+  path = Folder.decode(path);
+  folder = new Folder(path)
+  return folder;
+}
+
+
+function createFolder(name, path, prompt) {
+  var prompt = _.isString(prompt) ? prompt : 'Select a Folder',
+      path = _.isString(path) ? path : '',
+      folder = new Folder(path),
+      created = false,
+      newFolderName = ''
+
+  if(!folder.exists) return;
+  folder = new Folder(folder.fsName + '/' name).create()
+  if(created) {return folder}
+
+}
+
+IO = {
+  openFolderDialog: openFolderDialog,
+  openFileDialog: openFileDialog,
+  readFile: readFile,
+  readFileDialog: readFileDialog,
+  writeFile: writeFile,
+}
+
+
+KT.IO = IO
+})();
