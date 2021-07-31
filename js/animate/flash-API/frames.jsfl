@@ -120,12 +120,14 @@ function getBounds(frames) {
 
 function offsetFramePosition(frame, offset) {
   KT.Verbose(arguments);
-
+  
   var elements = frame.elements,
       i = 0,
       len = elements.length,
       element;
   
+  if(elements.length === 0) return;
+
   //If there are doted shapes, flash moves all elements at once.
   for(; i < len; i++) {
     element = elements[i];
