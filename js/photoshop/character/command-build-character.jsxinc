@@ -64,6 +64,7 @@ function BuildCharacter(sceneName) {
   character.algorithm('PS: Place Assets');
   character.traverse(function(child){
     var source = child.get('source');
+    if(!source)  return;
     var name = source.name.replace(/^_/, '+ ')
     source.name = name.replace(/_/g, ' ');
     if(_.isBoolean(child.get('isVisible'))) {
@@ -71,11 +72,11 @@ function BuildCharacter(sceneName) {
     }
   }, false, character)
 
-  KT.Layers.traverse(null, function(layer) {
-    if(_.isLayer(layer) ){
-      KT.Layers.rasterize(layer)
-    }
-  })
+  // KT.Layers.traverse(null, function(layer) {
+  //   if(_.isLayer(layer) ){
+  //     KT.Layers.rasterize(layer)
+  //   }
+  // })
 
 }
 
