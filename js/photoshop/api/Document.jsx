@@ -52,13 +52,17 @@ function importImageJs (path, document) {
     var file = path instanceof File ? path : new File(path);
         document = _.isDocument(document) ? document : KT.Document(),
         image = open(file);
-        layer = image.artLayers[0].duplicate(document)
+        layer = image.artLayers[0].duplicate(document),
         image.close();
         return layer
   } catch (err) {}
 }
-function importImageAction(path) {
-  var file = File(path);
+
+
+function importImageAction(path, rasterize) {
+  var file = File(path),
+      rasterize = _.isBoolean(rasterize) ? rasterize : true;
+
   if(!file || file instanceof Folder) return
   var idPlc = charIDToTypeID( "Plc " );
   var desc24 = new ActionDescriptor();
@@ -82,6 +86,9 @@ function importImageAction(path) {
   desc24.putObject( idOfst, idOfst, desc25 );
   executeAction( idPlc, desc24, DialogModes.NO );
   var layer = KT.Document().activeLayer;
+  if(rasterize) {
+    KT.Layers.rasterize(layer)
+  }
   return layer
 }
 

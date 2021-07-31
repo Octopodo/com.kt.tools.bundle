@@ -284,6 +284,8 @@ function moveLayerInside(parent, layer) {
 
 function rasterizeLayerAction(layer) {
     if(!_.isLayer(layer)) return;
+    layer.rasterize(RasterizeType.ENTIRELAYER);
+    return;
     selectLayer(layer);
 
   var idrasterizeLayer = stringIDToTypeID( "rasterizeLayer" );
@@ -297,6 +299,7 @@ function rasterizeLayerAction(layer) {
       desc15.putReference( idnull, ref1 );
   executeAction( idrasterizeLayer, desc15, DialogModes.NO );
   var stop = 0
+  $.writeln(layer.name + ': ' + layer)
 }
 
 
@@ -319,6 +322,7 @@ var idslct = charIDToTypeID( "slct" );
         list3.putInteger( layerID );
     desc24.putList( idLyrI, list3 );
 executeAction( idslct, desc24, DialogModes.NO );
+$.writeln(layer.name + ': ' + layer)
 }
 
 var LayerCheckers = {
